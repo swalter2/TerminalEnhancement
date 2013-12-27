@@ -1,5 +1,5 @@
 import urllib
-import re
+import re, sys
 import itertools,collections
 from SPARQLWrapper import SPARQLWrapper, JSON
 """
@@ -102,44 +102,50 @@ def askSubclass(uri1, uri2):
 
 def main():
     
-    resource_array = ["http://dbpedia.org/resource/Thessaloniki","http://dbpedia.org/resource/Crete","http://dbpedia.org/resource/Athens"]
+    if len(sys.argv) < 3:
+        print "ERROR"
     
-    class_array = []
-    property_array=[]
-    
-    try:
-        class_array =return_class_of_resource(resource_array)
-    #    this array has to be filled from the command line input
-    #    class_array = ["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Village"]
-    #    for x in itertools.combinations(class_array, 2):
-    #        print x
-    #        print askSubclass(x[1],x[0])
-    #        print
-    except:
-        pass
-    
-    try:
-        property_array = return_properties_of_resource(resource_array)
-    except:
-        pass
-    
-    output = ""
-    
-    if len(class_array) == 0:
-        output += "ERROR"
     else:
-        for entry in class_array:
-            output += entry+"\t"
-    output = output[:-1]+"\t\n\t"
-    
-    if len(property_array) == 0:
-        output += "ERROR"
-    else:
-        for entry,value in property_array:
-            output += entry+"\t"+value+"\t\t"
-    output = output[:-2]
-    
-    print output
+        resource_array = []
+        for entry in sys.argv[1:]:
+            resource_array.append(entry)
+                    
+        class_array = []
+        property_array=[]
+        
+        try:
+            class_array =return_class_of_resource(resource_array)
+        #    this array has to be filled from the command line input
+        #    class_array = ["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Village"]
+        #    for x in itertools.combinations(class_array, 2):
+        #        print x
+        #        print askSubclass(x[1],x[0])
+        #        print
+        except:
+            pass
+        
+        try:
+            property_array = return_properties_of_resource(resource_array)
+        except:
+            pass
+        
+        output = ""
+        
+        if len(class_array) == 0:
+            output += "ERROR"
+        else:
+            for entry in class_array:
+                output += entry+"\t"
+        output = output[:-1]+"\t\n\t"
+        
+        if len(property_array) == 0:
+            output += "ERROR"
+        else:
+            for entry,value in property_array:
+                output += entry+"\t"+value+"\t\t"
+        output = output[:-2]
+        
+        print output
     
     
 if __name__ == "__main__":
