@@ -108,9 +108,11 @@ def main():
     except:
         print "ERROR in json.load()"
         sys.exit(1)
-        
+
     resource_array = []
     for entry in data:
+        if "http://dbpedia.org/resource/" not in entry:
+            entry = "http://dbpedia.org/resource/"+entry
         resource_array.append(entry)
                 
     class_array = []
@@ -136,14 +138,14 @@ def main():
     output_property = ""
     
     if len(class_array) == 0:
-        output_class += "ERROR"
+        output_class += "ERROR-CLASS"
     else:
         for entry in class_array:
             output_class += entry+"\t"
     output_class = output_class[:-1]
     
     if len(property_array) == 0:
-        output_property += "ERROR"
+        output_property += "ERROR-PROPERTY"
     else:
         for entry,value in property_array:
             output_property += entry+"\t"+value+"\t\t"
