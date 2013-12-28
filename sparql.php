@@ -26,7 +26,20 @@ if (! $startpage) {
 }
 ?> 
 
-
+<html>
+<head>
+  <title> Linked Data based Terminal Enhancement </title>
+  <style>
+    a { color: #000000;
+        text-decoration:none; }
+    
+    #terminal-start { border-top: solid 1px;
+                    padding:15px;
+                    position:absolute;
+                    left: 300px;
+                    top:100px; }
+  </style>
+</head>
 
 
 
@@ -34,15 +47,11 @@ if (! $startpage) {
       {
 ?>
 <html>
-<head>
-<title>
-Linked Data based Terminal Enhancement
-</title>
 
-</head>
 
 <body>
-Please add at least 2 resources using DBpedia notation and seperated by a comma, into the textbox below!<br><br>
+  <div id="terminal-start">
+  Please add at least 2 resources using DBpedia notation and seperated by a comma, into the textbox below!<br><br>
 Examples are:<br>
 Thessaloniki,Crete,Athens<br>
 Hong_Kong_dollar,Euro<br>
@@ -51,13 +60,14 @@ The_Matrix,Keanu_Reeves<br>
 Max_Planck_Society,Bielefeld_University<br>
 BMW,Volkswagen<br>
 University_of_Paderborn,Bielefeld_University<br>
-etc.
-<form action= "?" method= "GET">
+etc.<br><br><br>
 
-<p>Resources:<br><input name="resourcelist" type="textbox" size="60" maxlength="60"></p>
-
-<input type= "submit" value= "Start">
-</form>
+    <span class="titel">Linked Data based Terminal Enhancement</span><br /><br />
+    <form action="?" method="GET">
+      <input id="start" type="text" name="resourcelist" size="80" maxlength="80" />
+      <input type="submit" value="Start" />
+    </form>
+  </div>
 </body>
 
 </html>
