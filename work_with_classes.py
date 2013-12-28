@@ -1,5 +1,5 @@
 import urllib
-import re, sys
+import re, sys, json
 import itertools,collections
 from SPARQLWrapper import SPARQLWrapper, JSON
 """
@@ -102,51 +102,56 @@ def askSubclass(uri1, uri2):
 
 def main():
     
-    if len(sys.argv) < 3:
-        print "ERROR"
+    data = []
+    try:
+        data = json.loads(sys.argv[1])
+    except:
+        print "ERROR in json.load()"
+        sys.exit(1)
+        
+    resource_array = []
+    for entry in data:
+        resource_array.append(entry)
+                
+    class_array = []
+    property_array=[]
     
+    try:
+        class_array =return_class_of_resource(resource_array)
+    #    this array has to be filled from the command line input
+    #    class_array = ["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Village"]
+    #    for x in itertools.combinations(class_array, 2):
+    #        print x
+    #        print askSubclass(x[1],x[0])
+    #        print
+    except:
+        pass
+    
+    try:
+        property_array = return_properties_of_resource(resource_array)
+    except:
+        pass
+    
+    output_class = ""
+    output_property = ""
+    
+    if len(class_array) == 0:
+        output_class += "ERROR"
     else:
-        resource_array = []
-        for entry in sys.argv[1:]:
-            resource_array.append(entry)
-                    
-        class_array = []
-        property_array=[]
-        
-        try:
-            class_array =return_class_of_resource(resource_array)
-        #    this array has to be filled from the command line input
-        #    class_array = ["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Village"]
-        #    for x in itertools.combinations(class_array, 2):
-        #        print x
-        #        print askSubclass(x[1],x[0])
-        #        print
-        except:
-            pass
-        
-        try:
-            property_array = return_properties_of_resource(resource_array)
-        except:
-            pass
-        
-        output = ""
-        
-        if len(class_array) == 0:
-            output += "ERROR"
-        else:
-            for entry in class_array:
-                output += entry+"\t"
-        output = output[:-1]+"\t\n\t"
-        
-        if len(property_array) == 0:
-            output += "ERROR"
-        else:
-            for entry,value in property_array:
-                output += entry+"\t"+value+"\t\t"
-        output = output[:-2]
-        
-        print output
+        for entry in class_array:
+            output_class += entry+"\t"
+    output_class = output_class[:-1]
     
+    if len(property_array) == 0:
+        output_property += "ERROR"
+    else:
+        for entry,value in property_array:
+            output_property += entry+"\t"+value+"\t\t"
+    output_property = output_property[:-2]
+    
+#    print output
+    result = {'class':output_class,'property':output_property}
+    print json.dumps(result)
     
 if __name__ == "__main__":
     main()
