@@ -98,22 +98,56 @@ def askSubclass(uri1, uri2):
     return False
 
 
+def createJsonObject(array_property,array_class):
+    string = "stdClass Object (\n"
+    string += "[properties] => Array (\n"
+    counter = 0
+    for entry in array_property:
+        string += "["+str(counter)+"] => stdClass Object (\n"
+        string += "[url] => "+str(entry[0])+" \n"
+        string += "[value] => "+str(entry[1])+" \n"
+        string += ") \n"
+        counter += 1
+    string += ") \n"
+             
+    counter = 0
+    string += "[classes] => Array (\n"
+    for entry in array_class:
+        string += "["+str(counter)+"] => stdClass Object (\n"
+        string += "[url] => "+str(entry)+" \n"
+#        string += "[url] => "+str(entry[0])+" \n"
+#        string += "[value] => "+str(entry[1])+" \n"
+        string += ") \n"
+        counter += 1
+    string += ") \n"
+        
+
+    string += ") \n" 
+    return string
+
+
 
 
 def main():
     
+    debug= False
     data = []
-    try:
-        data = json.loads(sys.argv[1])
-    except:
-        print "ERROR in json.load()"
-        sys.exit(1)
-
     resource_array = []
-    for entry in data:
-        if "http://dbpedia.org/resource/" not in entry:
-            entry = "http://dbpedia.org/resource/"+entry
-        resource_array.append(entry)
+    if not debug:
+        try:
+            data = json.loads(sys.argv[1])
+        except:
+            print "ERROR in json.load()"
+            sys.exit(1)
+    
+        
+        for entry in data:
+            if "http://dbpedia.org/resource/" not in entry:
+                entry = "http://dbpedia.org/resource/"+entry
+            resource_array.append(entry)
+    else:
+        resource_array.append("http://dbpedia.org/resource/Thessaloniki")
+        resource_array.append("http://dbpedia.org/resource/Athens")
                 
     class_array = []
     property_array=[]
@@ -134,26 +168,29 @@ def main():
     except:
         pass
     
-    output_class = ""
-    output_property = ""
-    
-    if len(class_array) == 0:
-        output_class += "ERROR-CLASS"
-    else:
-        for entry in class_array:
-            output_class += entry+"\t"
-    output_class = output_class[:-1]
-    
-    if len(property_array) == 0:
-        output_property += "ERROR-PROPERTY"
-    else:
-        for entry,value in property_array:
-            output_property += entry+"\t"+value+"\t\t"
-    output_property = output_property[:-2]
-    
-#    print output
-    result = {'class':output_class,'property':output_property}
-    print json.dumps(result)
+#    output_class = ""
+#    output_property = ""
+#    
+#    if len(class_array) == 0:
+#        output_class += "ERROR-CLASS"
+#    else:
+#        for entry in class_array:
+#            output_class += entry+"\t"
+#    output_class = output_class[:-1]
+#    
+#    if len(property_array) == 0:
+#        output_property += "ERROR-PROPERTY"
+#    else:
+#        for entry,value in property_array:
+#            output_property += entry+"\t"+value+"\t\t"
+#    output_property = output_property[:-2]
+#    
+##    print output
+#    result = {'class':output_class,'property':output_property}
+#    print json.dumps(result)
+#    print
+#    print
+    print createJsonObject(property_array,class_array)
     
 if __name__ == "__main__":
     main()
@@ -161,4 +198,8 @@ if __name__ == "__main__":
  
 
  
+ 
+ 
+
+
 
