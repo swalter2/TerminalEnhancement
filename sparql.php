@@ -40,6 +40,7 @@ if (! $startpage) {
 	
 	#classes
 	echo "<body> <div id=\"terminal-start\">";
+	echo "<form action=\"getTerminals.php\" method=\"post\">";
 	echo "Common classes:";
 	echo "<br>";
 			
@@ -73,6 +74,13 @@ if (! $startpage) {
 		echo "<label for=\"id{$uri}\"> $out</label><br>";
 	
 	}
+	
+	echo "<br>";
+	echo "<br>";
+	
+	echo "<input type=\"submit\" name=\"submit\" value=\"Submit\"><br>";
+	echo "Returning the entities in the prefered language, might need some time!";
+	echo "</form>";
 	
 	echo "</div></body>";
 	
