@@ -98,39 +98,92 @@ def askSubclass(uri1, uri2):
     return False
 
 
+#{
+#    "book": [
+#    {
+#       "id":"01",
+#       "language": "Java",
+#       "edition": "third",
+#       "author": "Herbert Schildt"
+#    },
+#    {
+#       "id":"07",
+#       "language": "C++",
+#       "edition": "second"
+#       "author": "E.Balagurusamy"
+#    }]
+#}
+
+def test():
+    output = {'properties': [],'classes': []}
+    output['properties'].append({
+            'url': 'http//test',
+            'value': 1
+        })
+    output['properties'].append({
+            'url': 'http//test1',
+            'value': 2
+        })
+    output['properties'].append({
+            'url': 'http//test2',
+            'value': 3
+        })
+    output['classes'].append({
+            'url': 'http//test/class',
+        })
+    
+    tmp = {"FRONT": "19.50", "RACK": "17.63", "REAR": "21.06", "ROOM": "15.6"}
+    bulkData = json.dumps(output, ensure_ascii = 'False')
+    print bulkData
+
+    
 def createJsonObject(array_property,array_class):
-    string = "stdClass Object (\n"
-    string += "[properties] => Array (\n"
-    counter = 0
+    output = {'properties': [],'classes': []}
     for entry in array_property:
-        string += "["+str(counter)+"] => stdClass Object (\n"
-        string += "[url] => "+str(entry[0])+" \n"
-        string += "[value] => "+str(entry[1])+" \n"
-        string += ") \n"
-        counter += 1
-    string += ") \n"
-             
-    counter = 0
-    string += "[classes] => Array (\n"
+        output['properties'].append({
+            'url': entry[0],
+            'value': entry[1]
+        })
+        
     for entry in array_class:
-        string += "["+str(counter)+"] => stdClass Object (\n"
-        string += "[url] => "+str(entry)+" \n"
+        output['classes'].append({
+            'url': entry
+        })
+    return json.dumps(output, ensure_ascii = 'False')
+
+#def createJsonObject(array_property,array_class):
+#    string = "stdClass Object (\n"
+#    string += "[properties] => Array (\n"
+#    counter = 0
+#    for entry in array_property:
+#        string += "["+str(counter)+"] => stdClass Object (\n"
 #        string += "[url] => "+str(entry[0])+" \n"
 #        string += "[value] => "+str(entry[1])+" \n"
-        string += ") \n"
-        counter += 1
-    string += ") \n"
-        
-
-    string += ") \n" 
-    return string
+#        string += ") \n"
+#        counter += 1
+#    string += ") \n"
+#             
+#    counter = 0
+#    string += "[classes] => Array (\n"
+#    for entry in array_class:
+#        string += "["+str(counter)+"] => stdClass Object (\n"
+#        string += "[url] => "+str(entry)+" \n"
+##        string += "[url] => "+str(entry[0])+" \n"
+##        string += "[value] => "+str(entry[1])+" \n"
+#        string += ") \n"
+#        counter += 1
+#    string += ") \n"
+#        
+#
+#    string += ") \n" 
+#    return string
 
 
 
 
 def main():
     
-    debug= False
+    debug= True
     data = []
     resource_array = []
     if not debug:
@@ -191,6 +244,7 @@ def main():
 #    print
 #    print
     print createJsonObject(property_array,class_array)
+    #test()
     
 if __name__ == "__main__":
     main()
