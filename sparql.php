@@ -7,6 +7,7 @@ if (!isset($_GET['resourcelist']))
 {
 	$startpage = true ;
 }
+
 if (! $startpage) {
 	$res = $_GET['resourcelist'];
 			
@@ -17,13 +18,27 @@ if (! $startpage) {
 
 	// Execute the python script with the JSON data
 	$result = shell_exec('python work_with_classes.py ' . escapeshellarg(json_encode($data)));
-	
+	$json_output = json_decode($result, true);
+	foreach($json_output as $entry)
+		{
+			
+			foreach($entry as $key => $value)
+			{
+				echo "<br>";
+				echo "count:";
+				echo count($value);
+				echo "<br>";
+				foreach($value as $x)
+				{
+					echo $x;
+					echo "<br>";
+				}
+				echo "<br>";
+				echo "<br>";
+			}
 
-	// Decode the result
-	$resultData = json_decode($result, true);
-
-	var_dump($resultData);
-}
+		}
+	}
 ?> 
 
 <html>
