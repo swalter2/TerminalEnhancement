@@ -1,3 +1,20 @@
+<html>
+<head>
+  <title> Linked Data based Terminal Enhancement </title>
+  <style>
+    a { color: #000000;
+        text-decoration:none; }
+    
+    #terminal-start { border-top: solid 1px;
+                    padding:15px;
+                    position:absolute;
+                    left: 300px;
+                    top:100px; }
+  </style>
+</head>
+
+
+
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
@@ -19,49 +36,54 @@ if (! $startpage) {
 	// Execute the python script with the JSON data
 	$result = shell_exec('python work_with_classes.py ' . escapeshellarg(json_encode($data)));
 	$json_output = json_decode($result, true);
-	foreach($json_output as $entry)
-		{
-			
-			foreach($entry as $key => $value)
-			{
-				echo "<br>";
-				echo "count:";
-				echo count($value);
-				echo "<br>";
-				foreach($value as $x)
-				{
-					echo $x;
-					echo "<br>";
-				}
-				echo "<br>";
-				echo "<br>";
-			}
 
-		}
+	
+	#classes
+	echo "<body> <div id=\"terminal-start\">";
+	echo "Common classes:";
+	echo "<br>";
+			
+	$classes = array_values($json_output)[0];
+	foreach($classes as $entry){
+		$uri = array_values($entry)[0];
+		$out = "{$uri}";
+		$replaceOntology = "http://dbpedia.org/ontology/";
+		$replaceProperty = "http://dbpedia.org/property/";
+		$out = str_replace($replaceProperty,"dbp:",$out);
+		$out = str_replace($replaceOntology,"dbo:",$out);
+		echo "<input type=\"checkbox\" name=\"setClass\" value=\"$uri\" id=\"id{ $uri}\" checked=\"checked\"/>";
+		echo "<label for=\"id{$uri}\"> $out</label><br>";
+				
+	}
+		
+	echo "<br>";
+	echo "<br>";
+	echo "Common properties:";
+	echo "<br>";
+	$properties = array_values($json_output)[1];
+	foreach($properties as $entry){
+		$uri = array_values($entry)[0];
+		$value = array_values($entry)[1];
+		$out = "{$uri} with {$value}";
+		$replaceOntology = "http://dbpedia.org/ontology/";
+		$replaceProperty = "http://dbpedia.org/property/";
+		$out = str_replace($replaceProperty,"dbp:",$out);
+		$out = str_replace($replaceOntology,"dbo:",$out);
+		echo "<input type=\"checkbox\" name=\"setProperty\" value=\"$uri\" id=\"id{ $uri}\" checked=\"checked\"/>";
+		echo "<label for=\"id{$uri}\"> $out</label><br>";
+	
+	}
+	
+	echo "</div></body>";
+	
 	}
 ?> 
-
-<html>
-<head>
-  <title> Linked Data based Terminal Enhancement </title>
-  <style>
-    a { color: #000000;
-        text-decoration:none; }
-    
-    #terminal-start { border-top: solid 1px;
-                    padding:15px;
-                    position:absolute;
-                    left: 300px;
-                    top:100px; }
-  </style>
-</head>
 
 
 
 <?php if ($startpage)
       {
 ?>
-<html>
 
 
 <body>
@@ -85,9 +107,10 @@ etc.<br><br><br>
   </div>
 </body>
 
-</html>
 
 <?php    
        }
 ?>
 
+
+</html>
