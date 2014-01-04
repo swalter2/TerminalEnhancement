@@ -52,7 +52,8 @@ def return_properties_of_resource(uri_array):
         for result in results["results"]["bindings"]:
             try:
                 #print result
-                uri_properties.append([result["properties"]["value"],result["value"]["value"]])
+                if "http" in result["value"]["value"]:
+                    uri_properties.append([result["properties"]["value"],result["value"]["value"]])
                 
             except:
                 pass

@@ -71,7 +71,7 @@ if (! $startpage) {
 		$replaceProperty = "http://dbpedia.org/property/";
 		$out = str_replace($replaceProperty,"dbp:",$out);
 		$out = str_replace($replaceOntology,"dbo:",$out);
-		echo "<input type=\"checkbox\" name=\"setProperty[]\" value=\"$out_python\" id=\"id{ $uri}\" checked=\"checked\"/>";
+		echo "<input type=\"checkbox\" name=\"setProperty[]\" value=\"$out_python\" id=\"id{ $uri}\" \"/>";
 		echo "<label for=\"id{$uri}\"> $out</label><br>";
 	
 	}
