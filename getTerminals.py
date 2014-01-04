@@ -10,7 +10,7 @@ def createJsonObject(array):
     output = {'entities': []}
     for entry in array:
         output['entities'].append({
-            'url': entry,
+            'name': entry,
         })
         
     return json.dumps(output, ensure_ascii = 'False')
@@ -27,14 +27,15 @@ def returnTerminals(classes, properties):
         else:
             query += " ?entity <"+tmp[0]+">  <"+tmp[1]+"> . "
         
-    query = "SELECT DISTINCT ?entity WHERE{"+query+"}"
+    query = "SELECT DISTINCT ?entityname WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")}"
     sparql.setQuery(query)
+#    print query
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
     entities = []
     for result in results["results"]["bindings"]:
         try:
-            entities.append(result["entity"]["value"])
+            entities.append(result["entityname"]["value"])
             
         except:
             pass
