@@ -123,8 +123,8 @@ def askSubclass(uri1, uri2):
 #    print bulkData
 
     
-def createJsonObject(array_property,array_class):
-    output = {'properties': [],'classes': []}
+def createJsonObject(array_property,array_class,array_yago):
+    output = {'properties': [],'classes': [], 'yago':[]}
     for entry in array_property:
         output['properties'].append({
             'url': entry[0],
@@ -133,6 +133,10 @@ def createJsonObject(array_property,array_class):
         
     for entry in array_class:
         output['classes'].append({
+            'url': entry
+        })
+    for entry in array_yago:
+        output['yago'].append({
             'url': entry
         })
     return json.dumps(output, ensure_ascii = 'False')
@@ -152,7 +156,7 @@ def sortClasses(classes):
     for i in range(0,len(classes_tmp)):
         change = False
         for i in range(0,len(classes_tmp)-1):
-            if askSubclass(classes_tmp[i],classes_tmp[i+1]):
+            if  not askSubclass(classes_tmp[i],classes_tmp[i+1]):
                 pass
             else:
                 tmp = classes_tmp[i]
@@ -161,16 +165,14 @@ def sortClasses(classes):
                 change = True
         if change:
             break;
-    classes = yago
-    for x in classes_tmp:
-        classes.append(x)
-    return classes
+
+    return classes_tmp, yago
 
 
 
 def main():
     
-    debug= False
+    debug= True
     data = []
     resource_array = []
     if not debug:
@@ -194,7 +196,7 @@ def main():
     
     try:
         class_array =return_class_of_resource(resource_array)
-        class_array = sortClasses(class_array)
+        class_array, yago_array = sortClasses(class_array)
         #make a simple sort over array, based on subclass or not.
         
     #    this array has to be filled from the command line input
@@ -211,7 +213,7 @@ def main():
     except:
         pass
     
-    print createJsonObject(property_array,class_array)
+    print createJsonObject(property_array,class_array, yago_array)
 
     
 if __name__ == "__main__":
