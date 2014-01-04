@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import urllib
 import re, sys, json
 import itertools,collections
@@ -138,6 +139,33 @@ def createJsonObject(array_property,array_class):
 
 
 
+def sortClasses(classes):
+    #sort only dbpedia classes, because tried to compare yago and dbpedia classes returns alsways false
+    yago = []
+    classes_tmp = []
+    
+    for x in classes:
+        if "yago" in x:
+            yago.append(x)
+        else:
+            classes_tmp.append(x)
+    for i in range(0,len(classes_tmp)):
+        change = False
+        for i in range(0,len(classes_tmp)-1):
+            if askSubclass(classes_tmp[i],classes_tmp[i+1]):
+                pass
+            else:
+                tmp = classes_tmp[i]
+                classes_tmp[i] = classes_tmp[i+1]
+                classes_tmp[i] = tmp
+                change = True
+        if change:
+            break;
+    classes = yago
+    for x in classes_tmp:
+        classes.append(x)
+    return classes
+
 
 
 def main():
@@ -166,6 +194,9 @@ def main():
     
     try:
         class_array =return_class_of_resource(resource_array)
+        class_array = sortClasses(class_array)
+        #make a simple sort over array, based on subclass or not.
+        
     #    this array has to be filled from the command line input
     #    class_array = ["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Village"]
     #    for x in itertools.combinations(class_array, 2):

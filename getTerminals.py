@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import urllib
 import re, sys, json
 import itertools,collections
