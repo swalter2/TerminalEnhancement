@@ -52,7 +52,7 @@ if (! $startpage) {
 		$replaceProperty = "http://dbpedia.org/property/";
 		$out = str_replace($replaceProperty,"dbp:",$out);
 		$out = str_replace($replaceOntology,"dbo:",$out);
-		echo "<input type=\"checkbox\" name=\"setClass\" value=\"$uri\" id=\"id{ $uri}\" checked=\"checked\"/>";
+		echo "<input type=\"checkbox\" name=\"setClass[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
 		echo "<label for=\"id{$uri}\"> $out</label><br>";
 				
 	}
@@ -66,11 +66,12 @@ if (! $startpage) {
 		$uri = array_values($entry)[0];
 		$value = array_values($entry)[1];
 		$out = "{$uri} with {$value}";
+		$out_python = $out;
 		$replaceOntology = "http://dbpedia.org/ontology/";
 		$replaceProperty = "http://dbpedia.org/property/";
 		$out = str_replace($replaceProperty,"dbp:",$out);
 		$out = str_replace($replaceOntology,"dbo:",$out);
-		echo "<input type=\"checkbox\" name=\"setProperty\" value=\"$uri\" id=\"id{ $uri}\" checked=\"checked\"/>";
+		echo "<input type=\"checkbox\" name=\"setProperty[]\" value=\"$out_python\" id=\"id{ $uri}\" checked=\"checked\"/>";
 		echo "<label for=\"id{$uri}\"> $out</label><br>";
 	
 	}
@@ -79,7 +80,7 @@ if (! $startpage) {
 	echo "<br>";
 	
 	echo "<input type=\"submit\" name=\"submit\" value=\"Submit\"><br>";
-	echo "Returning the entities in the prefered language, might need some time!";
+	#echo "Returning the entities in the prefered language, might need some time!";
 	echo "</form>";
 	
 	echo "</div></body>";
