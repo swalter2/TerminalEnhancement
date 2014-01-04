@@ -41,10 +41,23 @@ if (! $startpage) {
 	#classes
 	echo "<body> <div id=\"terminal-start\">";
 	echo "<form action=\"getTerminals.php\" method=\"post\">";
-	echo "Common classes:";
+	echo "Common yago classes:";
 	echo "<br>";
-			
-	$classes = array_values($json_output)[0];
+	$yago = array_values($json_output)[0];
+	foreach($yago as $entry){
+		$uri = array_values($entry)[0];
+		$out = "{$uri}";
+		$replaceYago = "http://dbpedia.org/class/yago/";
+		$out = str_replace($replaceYago,"",$out);
+		echo "<input type=\"checkbox\" name=\"setClass[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
+		echo "<label for=\"id{$uri}\"> $out</label><br>";
+	
+	}
+	echo "<br>";
+	echo "<br>";
+	echo "Common dbpedia classes:";
+	echo "<br>";
+	$classes = array_values($json_output)[1];
 	foreach($classes as $entry){
 		$uri = array_values($entry)[0];
 		$out = "{$uri}";
@@ -61,7 +74,7 @@ if (! $startpage) {
 	echo "<br>";
 	echo "Common properties:";
 	echo "<br>";
-	$properties = array_values($json_output)[1];
+	$properties = array_values($json_output)[2];
 	foreach($properties as $entry){
 		$uri = array_values($entry)[0];
 		$value = array_values($entry)[1];
