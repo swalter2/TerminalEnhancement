@@ -53,7 +53,7 @@ def returnTerminals(classes, properties,language):
                 pass
         return createJsonObject(entities)
     else:
-        query = "SELECT DISTINCT ?entityname ?entityname2 WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")?entity rdfs:label ?entityname2. FILTER (lang(?entityname2) = \""+language+"\")}"
+        query = "SELECT DISTINCT ?entityname ?entityname2 WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\") . OPTIONAL{ ?entity rdfs:label ?entityname2. FILTER (lang(?entityname2) = \""+language+"\")}}"
         sparql.setQuery(query)
 #        print query
         sparql.setReturnFormat(JSON)

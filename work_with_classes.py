@@ -165,7 +165,8 @@ def sortClasses(classes):
                 change = True
         if change:
             break;
-
+#    print classes_tmp
+#    print
     return classes_tmp, yago
 
 

@@ -133,7 +133,7 @@ if (! $startpage) {
   <div id="terminal-start">
   Please add at least 2 resources using DBpedia notation and seperated by a comma, into the textbox below!<br><br>
 Examples are:<br>
-Thessaloniki,Crete,Athens<br>
+Thessaloniki,Athens<br>
 Hong_Kong_dollar,Euro<br>
 Hong_Kong_dollar,Liberty_Dollar,Austrian_krone,Euro<br>
 The_Matrix,Keanu_Reeves<br>
