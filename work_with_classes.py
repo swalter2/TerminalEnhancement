@@ -172,7 +172,7 @@ def sortClasses(classes):
 
 def main():
     
-    debug= True
+    debug= False
     data = []
     resource_array = []
     if not debug:
