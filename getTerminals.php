@@ -34,16 +34,29 @@
     	else{
     		$properties = [];
     	}
-		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($classes)) .' '. escapeshellarg(json_encode($properties)));
+    	$second_language = ($_POST['language']);
+    	#echo $second_language;
+		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($classes)) .' '. escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language));
+		#echo $result;
 		$json_output = json_decode($result, true);
 		$entities = array_values($json_output)[0];
+		echo "<br>";
 		echo "Retrieved ".count($entities)." terminals";
 		echo "<br>";
 		echo "<br>";
 		$abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
 		foreach($entities as $entry){
-			$name = array_values($entry)[0];
-			echo $name;
+			if (count(array_values($entry))==2){
+				$name = array_values($entry)[1];
+				echo $name;
+				if (count(array_values($entry)[0])>0){
+					echo " -- ".array_values($entry)[0];
+				}
+			}
+			else{
+				$name = array_values($entry)[0];
+				echo $name;
+			}
 			echo "<br>";
 			$abnf ="{$abnf} {$name} | ";
 				

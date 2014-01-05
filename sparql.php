@@ -41,18 +41,6 @@ if (! $startpage) {
 	#classes
 	echo "<body> <div id=\"terminal-start\">";
 	echo "<form action=\"getTerminals.php\" method=\"post\">";
-	echo "Common yago classes:";
-	echo "<br>";
-	$yago = array_values($json_output)[0];
-	foreach($yago as $entry){
-		$uri = array_values($entry)[0];
-		$out = "{$uri}";
-		$replaceYago = "http://dbpedia.org/class/yago/";
-		$out = str_replace($replaceYago,"",$out);
-		echo "<input type=\"checkbox\" name=\"setClass[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
-		echo "<label for=\"id{$uri}\"> $out</label><br>";
-	
-	}
 	echo "<br>";
 	echo "<br>";
 	echo "Common dbpedia classes:";
@@ -67,8 +55,23 @@ if (! $startpage) {
 		$out = str_replace($replaceOntology,"dbo:",$out);
 		echo "<input type=\"checkbox\" name=\"setClass[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
 		echo "<label for=\"id{$uri}\"> $out</label><br>";
-				
+	
 	}
+	echo "<br>";
+	echo "<br>";
+	echo "Common yago classes:";
+	echo "<br>";
+	$yago = array_values($json_output)[0];
+	foreach($yago as $entry){
+		$uri = array_values($entry)[0];
+		$out = "{$uri}";
+		$replaceYago = "http://dbpedia.org/class/yago/";
+		$out = str_replace($replaceYago,"",$out);
+		echo "<input type=\"checkbox\" name=\"setClass[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
+		echo "<label for=\"id{$uri}\"> $out</label><br>";
+	
+	}
+	
 		
 	echo "<br>";
 	echo "<br>";
@@ -89,6 +92,24 @@ if (! $startpage) {
 	
 	}
 	
+	echo "<br>";
+	echo "<br>";
+	
+	#echo "The name of the entities will be in English,<br>";
+	echo "Additional language for terminals (default is English):<br>";
+	#make english default and with optional one other language possible
+	echo "<input type=\"radio\" name=\"language\" value=\"none\" id=\"none\" checked=\"checked\"/>";
+	echo "<label for=\"id{en}\">None</label><br>";
+	echo "<input type=\"radio\" name=\"language\" value=\"de\" id=\"de\"/>";
+	echo "<label for=\"id{de}\">German</label><br>";
+	echo "<input type=\"radio\" name=\"language\" value=\"fr\" id=\"fr\"/>";
+	echo "<label for=\"id{fr}\">French</label><br>";
+	echo "<input type=\"radio\" name=\"language\" value=\"es\" id=\"es\"/>";
+	echo "<label for=\"id{es}\">Spanish</label><br>";
+	echo "<input type=\"radio\" name=\"language\" value=\"zh\" id=\"zh\"\"/>";
+	echo "<label for=\"id{zh}\">Chinese</label><br>";
+	echo "<input type=\"radio\" name=\"language\" value=\"ru\" id=\"ru\"/>";
+	echo "<label for=\"id{ru}\">Russian</label><br>";
 	echo "<br>";
 	echo "<br>";
 	
