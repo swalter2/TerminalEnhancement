@@ -45,14 +45,14 @@ if (! $startpage) {
 	echo "<br>";
 	echo "Common dbpedia classes:";
 	echo "<br>";
+	echo "(The most general class is on the top, the most specialized class is on the bottom)";
+	echo "<br>";
 	$classes = array_values($json_output)[1];
 	foreach($classes as $entry){
 		$uri = array_values($entry)[0];
 		$out = "{$uri}";
 		$replaceOntology = "http://dbpedia.org/ontology/";
-		$replaceProperty = "http://dbpedia.org/property/";
-		$out = str_replace($replaceProperty,"dbp:",$out);
-		$out = str_replace($replaceOntology,"dbo:",$out);
+		$out = str_replace($replaceOntology,"",$out);
 		echo "<input type=\"checkbox\" name=\"setClass[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
 		echo "<label for=\"id{$uri}\"> $out</label><br>";
 	

@@ -151,7 +151,7 @@ def sortClasses(classes):
     for x in classes:
         if "yago" in x:
             yago.append(x)
-        else:
+        elif "dbpedia.org/ontology/" in x:
             classes_tmp.append(x)
     for i in range(0,len(classes_tmp)):
         change = False
