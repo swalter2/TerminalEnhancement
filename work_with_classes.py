@@ -38,16 +38,19 @@ def return_class_of_resource(uri_array):
             except:
                 pass
 
-    unique, non_unique = unique_items(uri_classes,len(uri_array))
-    
-#    remove duplicates!
-    non_unique = list(set(non_unique))
-    return non_unique
+    if len(uri_array)==1:
+        return uri_classes
+    else:
+        unique, non_unique = unique_items(uri_classes,len(uri_array))
+        
+    #    remove duplicates!
+        non_unique = list(set(non_unique))
+        return non_unique
 
 def return_properties_of_resource(uri_array):
     uri_properties = []
     for uri in uri_array:
-        sparql.setQuery("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?properties ?value WHERE {<"+uri+"> ?properties ?value. FILTER regex(?properties, \"dbpedia.org\")}")
+        sparql.setQuery("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?properties ?value WHERE {<"+uri+"> ?properties ?value. FILTER regex(?properties, \"dbpedia.org/ontology\"). FILTER regex(?value, \"dbpedia.org\")}")
         sparql.setReturnFormat(JSON)
         results = sparql.query().convert()
         for result in results["results"]["bindings"]:
