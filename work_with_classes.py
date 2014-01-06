@@ -133,26 +133,55 @@ def createJsonObject(array_property,array_class,array_yago):
         
     for entry in array_class:
         output['classes'].append({
-            'url': entry
+            'url': entry[0],
+            'value': entry[1]
         })
     for entry in array_yago:
         output['yago'].append({
-            'url': entry
+            'url': entry[0],
+            'value': entry[1]
         })
     return json.dumps(output, ensure_ascii = 'False')
 
 
+def returnNumberEntities(uri):
+    query = "SELECT (COUNT(DISTINCT ?x)) as ?value WHERE {?x rdf:type <"+uri+">}"
+    value = 0
+    try:
+        sparql.setQuery(query)
+        sparql.setReturnFormat(JSON)
+        results = sparql.query().convert()
+        for result in results["results"]["bindings"]:
+            try:
+                value = int((result["value"]["value"]))
+                
+            except:
+                pass
+    except:
+        value = 0
+        
+    return value
 
 def sortClasses(classes):
     #sort only dbpedia classes, because tried to compare yago and dbpedia classes returns alsways false
     yago = []
+    yago_value = []
+    classes_value = []
     classes_tmp = []
-    
+
     for x in classes:
         if "yago" in x:
             yago.append(x)
         elif "dbpedia.org/ontology/" in x:
             classes_tmp.append(x)
+            
+    #return number of entities for yago classes and sort classes according to frequency 
+    for uri in yago:
+        value = returnNumberEntities(uri)
+        yago_value.append([uri,value])
+    yago_value = sorted(yago_value, key=lambda entry: entry[1], reverse=True) 
+            
+    #sort hierarchy of dbpedia classes
     for i in range(0,len(classes_tmp)):
         change = False
         for i in range(0,len(classes_tmp)-1):
@@ -165,9 +194,12 @@ def sortClasses(classes):
                 change = True
         if change:
             break;
-#    print classes_tmp
-#    print
-    return classes_tmp, yago
+    
+    for uri in classes_tmp:
+        value = returnNumberEntities(uri)
+        classes_value.append([uri,value])
+    
+    return classes_value, yago_value
 
 
 
@@ -193,19 +225,12 @@ def main():
         resource_array.append("http://dbpedia.org/resource/Athens")
                 
     class_array = []
-    property_array=[]
+    property_array = []
+    yago_array = []
     
     try:
         class_array =return_class_of_resource(resource_array)
         class_array, yago_array = sortClasses(class_array)
-        #make a simple sort over array, based on subclass or not.
-        
-    #    this array has to be filled from the command line input
-    #    class_array = ["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Village"]
-    #    for x in itertools.combinations(class_array, 2):
-    #        print x
-    #        print askSubclass(x[1],x[0])
-    #        print
     except:
         pass
     
