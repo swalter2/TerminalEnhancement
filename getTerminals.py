@@ -64,7 +64,11 @@ def returnTerminals(classes, properties,language):
                 entities.append([result["entityname"]["value"],result["entityname2"]["value"]])
                 
             except:
-                pass
+                try:
+                    entities.append([result["entityname"]["value"],""])
+                except:
+                    pass
+#                    print "Unexpected error:", sys.exc_info()[0]
         return createMultiJsonObject(entities)
 
 def main():
@@ -93,8 +97,9 @@ def main():
         
     else:
         classes = ["http://dbpedia.org/ontology/Place"] 
-        properties = ["http://dbpedia.org/ontology/country with http://dbpedia.org/resource/Greece"]
-        language = "none" 
+        classes = ["http://dbpedia.org/ontology/Currency"] 
+        properties = []
+        language = "zh" 
     
     print returnTerminals(classes,properties,language)
 

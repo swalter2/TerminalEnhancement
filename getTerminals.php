@@ -56,9 +56,10 @@
 			if (count(array_values($entry))==2){
 				$name = array_values($entry)[1];
 				echo $name;
-				if (count(array_values($entry)[0])>0){
-					echo " -- ".array_values($entry)[0];
-					$name2 = array_values($entry)[0];
+				$tmp = array_values($entry)[0];
+				if (count($tmp)>0 && $tmp!=""){
+					echo " -- ".$tmp;
+					$name2 = $tmp;
 				}
 			}
 			else{
