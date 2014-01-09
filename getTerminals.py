@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+
 #sys.path.append("/home/swalter/local/lib/python2.7/site-packages/SPARQLWrapper-1.5.2-py2.7.egg")
 import urllib
 import re, json
