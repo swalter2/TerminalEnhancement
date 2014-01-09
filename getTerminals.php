@@ -1,6 +1,12 @@
+<?php
+header('Content-Type: text/html; charset=utf-8');
+
+?>
+
 <html>
 <head>
   <title> Linked Data based Terminal Enhancement </title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <style>
     a { color: #000000;
         text-decoration:none; }
