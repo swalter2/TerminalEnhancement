@@ -35,6 +35,7 @@ if (! $startpage) {
 
 	// Execute the python script with the JSON data
 	$result = shell_exec('python work_with_classes.py ' . escapeshellarg(json_encode($data)));
+	#echo $result;
 	$json_output = json_decode($result, true);
 
 	
@@ -83,6 +84,7 @@ if (! $startpage) {
 	foreach($properties as $entry){
 		$uri = array_values($entry)[0];
 		$value = array_values($entry)[1];
+		#I use the " with " as seperator later
 		$out = "{$uri} with {$value}";
 		$out_python = $out;
 		$replaceOntology = "http://dbpedia.org/ontology/";
@@ -91,6 +93,7 @@ if (! $startpage) {
 		$out = str_replace($replaceProperty,"",$out);
 		$out = str_replace($replaceOntology,"",$out);
 		$out = str_replace($replaceResoruce,"",$out);
+		$out = str_replace("with","",$out);
 		
 		echo "<input type=\"checkbox\" name=\"setProperty[]\" value=\"$out_python\" id=\"id{ $uri}\" \"/>";
 		echo "<label for=\"id{$uri}\"> $out</label><br>";
@@ -136,7 +139,7 @@ if (! $startpage) {
 
 <body>
   <div id="terminal-start">
-  Please add at least 2 resources using DBpedia notation and seperated by a comma, into the textbox below!<br><br>
+  Please add at least one or more resources using DBpedia label and seperated by a comma, into the textbox below!<br><br>
 Examples are:<br>
 Thessaloniki,Athens<br>
 Hong_Kong_dollar,Euro<br>

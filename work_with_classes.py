@@ -25,10 +25,11 @@ def unique_items(iterable,number):
     return unique, non_unique
 
 
-def return_class_of_resource(uri_array):
+def return_class_of_resource(label_array):
+ 
     uri_classes = []
-    for uri in uri_array:
-        sparql.setQuery("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?classes WHERE {<"+uri+"> rdf:type ?classes. FILTER regex(?classes, \"dbpedia.org\")}")
+    for label in label_array:
+        sparql.setQuery("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?classes WHERE {?x rdfs:label \""+label+"\"@en .?x rdf:type ?classes. FILTER regex(?classes, \"dbpedia.org\")}")
         sparql.setReturnFormat(JSON)
         results = sparql.query().convert()
         for result in results["results"]["bindings"]:
@@ -38,19 +39,20 @@ def return_class_of_resource(uri_array):
             except:
                 pass
 
-    if len(uri_array)==1:
+    if len(label_array)==1:
         return uri_classes
     else:
-        unique, non_unique = unique_items(uri_classes,len(uri_array))
+        unique, non_unique = unique_items(uri_classes,len(label_array))
         
     #    remove duplicates!
         non_unique = list(set(non_unique))
         return non_unique
 
-def return_properties_of_resource(uri_array):
+def return_properties_of_resource(label_array):
     uri_properties = []
-    for uri in uri_array:
-        sparql.setQuery("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?properties ?value WHERE {<"+uri+"> ?properties ?value. FILTER regex(?properties, \"dbpedia.org/ontology\"). FILTER regex(?value, \"dbpedia.org\")}")
+    for label in label_array:
+#        print "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?properties ?value WHERE {?x rdfs:label \""+label+"\"@en .?x ?properties ?value. FILTER regex(?properties, \"dbpedia.org/ontology\"). FILTER regex(?value, \"dbpedia.org\")}"
+        sparql.setQuery("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?properties ?value WHERE {?x rdfs:label \""+label+"\"@en .?x ?properties ?value. FILTER regex(?properties, \"dbpedia.org/ontology\"). FILTER regex(?value, \"dbpedia.org\")}")
         sparql.setReturnFormat(JSON)
         results = sparql.query().convert()
         for result in results["results"]["bindings"]:
@@ -74,8 +76,9 @@ def return_properties_of_resource(uri_array):
     uri_properties=[]
     
     for key,value in temp.iteritems():
-        if value[0]==len(uri_array):
+        if value[0]==len(label_array):
             uri_properties.append([key,value[1]])
+#    print uri_properties
     return uri_properties
     
 
@@ -220,12 +223,14 @@ def main():
     
         
         for entry in data:
-            if "http://dbpedia.org/resource/" not in entry:
-                entry = "http://dbpedia.org/resource/"+entry
+#            if "http://dbpedia.org/resource/" not in entry:
+#                entry = "http://dbpedia.org/resource/"+entry
+            if entry.startswith(' '):
+                entry = entry[1:]
             resource_array.append(entry)
     else:
-        resource_array.append("http://dbpedia.org/resource/Thessaloniki")
-        resource_array.append("http://dbpedia.org/resource/Athens")
+        resource_array.append("Bruce Lee")
+        resource_array.append("Jackie Chan")
                 
     class_array = []
     property_array = []
