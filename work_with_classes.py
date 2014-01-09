@@ -189,6 +189,8 @@ def sortClasses(classes):
         value = returnNumberEntities(uri)
         yago_value.append([uri,value])
     yago_value = sorted(yago_value, key=lambda entry: entry[1], reverse=True) 
+    for entry in yago_value:
+        entry[1] ='{0:,}'.format(entry[1])
             
     #sort hierarchy of dbpedia classes
     for i in range(0,len(classes_tmp)):
@@ -205,7 +207,7 @@ def sortClasses(classes):
             break;
     
     for uri in classes_tmp:
-        value = returnNumberEntities(uri)
+        value = '{0:,}'.format(returnNumberEntities(uri))
         classes_value.append([uri,value])
     
     return classes_value, yago_value
