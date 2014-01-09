@@ -142,12 +142,13 @@ if (! $startpage) {
   Please add at least one or more resources using DBpedia label and seperated by a comma, into the textbox below!<br><br>
 Examples are:<br>
 Thessaloniki,Athens<br>
-Hong_Kong_dollar,Euro<br>
-Hong_Kong_dollar,Liberty_Dollar,Austrian_krone,Euro<br>
-The_Matrix,Keanu_Reeves<br>
-Max_Planck_Society,Bielefeld_University<br>
+Hong Kong dollar,Euro<br>
+Hong Kong dollar,Liberty Dollar,Austrian krone,Euro<br>
+The Matrix,Keanu Reeves<br>
+Max Planck Society,Bielefeld University<br>
 BMW,Volkswagen<br>
-University_of_Paderborn,Bielefeld_University<br>
+Facebook,Yahoo!<br>
+University of Paderborn,Bielefeld University<br>
 etc.<br><br><br>
 
     <span class="titel">Linked Data based Terminal Enhancement</span><br /><br />
