@@ -82,6 +82,13 @@ if (! $startpage) {
 	
 		
 	echo "<br>";
+	echo "The number in brackets represents the number of entities, linked to the class.<br>";
+	echo "Connect classes with logical AND or OR.<br>";
+	echo "<input type=\"radio\" name=\"boolean\" value=\"AND\" id=\"and\" checked=\"checked\"/>";
+	echo "<label for=\"id{and}\">AND</label><br>";
+	echo "<input type=\"radio\" name=\"boolean\" value=\"OR\" id=\"or\"/>";
+	echo "<label for=\"id{or}\">OR</label><br>";
+	echo "<br>";
 	echo "<br>";
 	echo "Common properties:";
 	echo "<br>";
@@ -107,7 +114,7 @@ if (! $startpage) {
 	
 	echo "<br>";
 	echo "<br>";
-	
+
 	#echo "The name of the entities will be in English,<br>";
 	echo "Additional language for terminals (default is English):<br>";
 	#make english default and with optional one other language possible

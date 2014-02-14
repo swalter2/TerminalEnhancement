@@ -30,10 +30,27 @@ def createMultiJsonObject(array):
     return json.dumps(output, ensure_ascii = 'False')
 
 
-def returnTerminals(classes, properties,language):
+def returnTerminals(classes, properties,language,boolean):
     query = ""
-    for x in classes:
-        query += " ?entity rdf:type <"+x+"> . "
+    if boolean == "AND" and len(classes)>1:
+        for x in classes:
+            query += " ?entity rdf:type <"+x+"> . "
+    elif len(classes)==1:
+        for x in classes:
+            query += " ?entity rdf:type <"+x+"> . "
+    elif boolean == "OR" and len(classes)>1:
+        for i in range(0,len(classes)):
+            tmp = classes[0]
+            tmp_query = "{  ?entity rdf:type <"+tmp+"> ."
+            
+            for x in classes:
+                if tmp not in x:
+                    tmp_query += "OPTIONAL{ ?entity rdf:type <"+x+"> .}"            
+            tmp_query += "} UNION"
+            query += tmp_query
+    if query.endswith(" UNION"):
+        query = query[:-6]
+    
     for x in properties:
         tmp = x.split(" with ")
         if "http" not in tmp[1]:
@@ -44,7 +61,7 @@ def returnTerminals(classes, properties,language):
     if language == "none" or len(language)==0:
         query = "SELECT DISTINCT ?entityname WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")}"
         sparql.setQuery(query)
-    #    print query
+        #print query
         sparql.setReturnFormat(JSON)
         results = sparql.query().convert()
         entities = []
@@ -58,7 +75,7 @@ def returnTerminals(classes, properties,language):
     else:
         query = "SELECT DISTINCT ?entityname ?entityname2 WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\") . OPTIONAL{ ?entity rdfs:label ?entityname2. FILTER (lang(?entityname2) = \""+language+"\")}}"
         sparql.setQuery(query)
-#        print query
+        #print query
         sparql.setReturnFormat(JSON)
         results = sparql.query().convert()
         entities = []
@@ -80,6 +97,7 @@ def main():
     properties = []
     resource_array = []
     language = ""
+    boolean = "AND"
     if not debug:
         try:
             classes = json.loads(sys.argv[1])
@@ -96,15 +114,26 @@ def main():
             language = sys.argv[3]
         except:
             pass
+        try:
+            boolean = sys.argv[4]
+        except:
+            pass
+        
+        
     
         
     else:
         classes = ["http://dbpedia.org/ontology/Place"] 
-        classes = ["http://dbpedia.org/ontology/Currency"] 
+        classes.append("http://dbpedia.org/ontology/Currency") 
         properties = []
-        language = "zh" 
+        language = "zh"
+        boolean = "OR"
+        #print ("classes",classes)
+        #print ("properties",properties)
+        #print ("language",language)
+        #print ("boolean",boolean) 
     
-    print returnTerminals(classes,properties,language)
+    print returnTerminals(classes,properties,language,boolean)
 
     
 

@@ -1,0 +1,2 @@
+#ABNF 1.0 UTF-8; 
+ Terminals =  Amazon.com |  Net Applications |  PayPal |  Ancestry.com |  EBay |  Google (компания) |  Фонд Викимедиа |  Yahoo! |  Time Warner |  Real Time Bidding |  BitTorrent, Inc. |  Bomis |  DynDNS |  Electronic Data Systems |  HughesNet |  Qwest Communications |  Stardock |  Викия |  DoubleClick |  Facebook ;

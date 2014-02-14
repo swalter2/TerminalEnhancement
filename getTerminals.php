@@ -36,6 +36,7 @@ header('Content-Type: text/html; charset=utf-8');
     		$properties = [];
     	}
     	$second_language = ($_POST['language']);
+    	$boolean = ($_POST['boolean']);
     	if($second_language != "none"){
     		echo "<body>";
     		echo "<p>";
@@ -46,7 +47,7 @@ header('Content-Type: text/html; charset=utf-8');
     	
     	echo "<body> <div id=\"terminal-start\">";
     	
-		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($classes)) .' '. escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language));
+		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($classes)) .' '. escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language).' '. escapeshellarg($boolean));
 		#echo $result;
 		$json_output = json_decode($result, true);
 		$entities = array_values($json_output)[0];
