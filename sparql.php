@@ -56,12 +56,13 @@ if (! $startpage) {
 	$classes = array_values($json_output)[1];
 	foreach($classes as $entry){
 		$uri = array_values($entry)[0];
-		$value = array_values($entry)[1];
+		$value = array_values($entry)[2];
+		$examples = array_values($entry)[1];
 		$out = "{$uri}";
 		$replaceOntology = "http://dbpedia.org/ontology/";
 		$out = str_replace($replaceOntology,"",$out);
 		echo "<input type=\"checkbox\" name=\"setClass[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
-		echo "<label for=\"id{$uri}\"> $out </label> <font color=\"grey\">( $value )</font> <br>";
+		echo "<label for=\"id{$uri}\"> $out </label> <font color=\"grey\">( $value )</font> e.g. $examples <br>";
 	
 	}
 	echo "<br>";
@@ -71,12 +72,13 @@ if (! $startpage) {
 	$yago = array_values($json_output)[0];
 	foreach($yago as $entry){
 		$uri = array_values($entry)[0];
-		$value = array_values($entry)[1];
+		$value = array_values($entry)[2];
+		$examples = array_values($entry)[1];
 		$out = "{$uri}";
 		$replaceYago = "http://dbpedia.org/class/yago/";
 		$out = str_replace($replaceYago,"",$out);
 		echo "<input type=\"checkbox\" name=\"setClass[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
-		echo "<label for=\"id{$uri}\"> $out</label> <font color=\"grey\">( $value )</font> <br>";
+		echo "<label for=\"id{$uri}\"> $out</label> <font color=\"grey\">( $value )</font> e.g. $examples <br>";
 	
 	}
 	

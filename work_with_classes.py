@@ -143,12 +143,14 @@ def createJsonObject(array_property,array_class,array_yago):
     for entry in array_class:
         output['classes'].append({
             'url': entry[0],
-            'value': entry[1]
+            'value': entry[1],
+            'examples': entry[2]
         })
     for entry in array_yago:
         output['yago'].append({
             'url': entry[0],
-            'value': entry[1]
+            'value': entry[1],
+            'examples': entry[2]
         })
     return json.dumps(output, ensure_ascii = 'False')
 
@@ -171,6 +173,29 @@ def returnNumberEntities(uri):
         
     return value
 
+def getExampleResources(uri,number):
+    query = "SELECT ?entityname WHERE {?x rdf:type <"+uri+">. ?x rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")}LIMIT "+str(number)
+    output = ""
+#    print ("output query",query)
+    try:
+        sparql.setQuery(query)
+        sparql.setReturnFormat(JSON)
+        results = sparql.query().convert()
+        for result in results["results"]["bindings"]:
+            try:
+                output+=(result["entityname"]["value"])+", "
+                
+            except:
+                pass
+    except:
+        output = ""
+        
+    if output.endswith(", "):
+        output = output[:-2]
+#    print("output",output)
+    return output
+
+
 def sortClasses(classes):
     #sort only dbpedia classes, because tried to compare yago and dbpedia classes returns alsways false
     yago = []
@@ -187,7 +212,8 @@ def sortClasses(classes):
     #return number of entities for yago classes and sort classes according to frequency 
     for uri in yago:
         value = returnNumberEntities(uri)
-        yago_value.append([uri,value])
+        examples = getExampleResources(uri,4)
+        yago_value.append([uri,value,examples])
     yago_value = sorted(yago_value, key=lambda entry: entry[1], reverse=True) 
     for entry in yago_value:
         entry[1] ='{0:,}'.format(entry[1])
@@ -208,7 +234,8 @@ def sortClasses(classes):
     
     for uri in classes_tmp:
         value = '{0:,}'.format(returnNumberEntities(uri))
-        classes_value.append([uri,value])
+        examples = getExampleResources(uri,10)
+        classes_value.append([uri,value,examples])
     
     return classes_value, yago_value
 
