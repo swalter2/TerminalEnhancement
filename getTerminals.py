@@ -30,6 +30,56 @@ def createMultiJsonObject(array):
     return json.dumps(output, ensure_ascii = 'False')
 
 
+def returnTerminals2(properties,language):
+    query = ""
+    for x in properties:
+        tmp = x.split(" with ")
+        if "http" not in tmp[1]:
+            query += " ?entity <"+tmp[0]+">  \""+tmp[1]+"\" . "
+        else:
+            query += " ?entity <"+tmp[0]+">  <"+tmp[1]+"> . "
+        
+    if language == "none" or len(language)==0:
+        query = "SELECT DISTINCT ?entityname WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")}"
+        sparql.setQuery(query)
+#        print query
+        sparql.setReturnFormat(JSON)
+        results = sparql.query().convert()
+        entities = []
+        for result in results["results"]["bindings"]:
+            try:
+                entities.append(result["entityname"]["value"])
+                
+            except:
+                pass
+        return createJsonObject(entities)
+    else:
+        query = "SELECT DISTINCT ?entityname ?entityname2 WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\") . OPTIONAL{ ?entity rdfs:label ?entityname2. FILTER (lang(?entityname2) = \""+language+"\")}}"
+        sparql.setQuery(query)
+#        print query
+        sparql.setReturnFormat(JSON)
+        results = sparql.query().convert()
+        entities = []
+        for result in results["results"]["bindings"]:
+            try:
+                entities.append([result["entityname"]["value"],result["entityname2"]["value"]])
+                
+            except:
+                try:
+                    entities.append([result["entityname"]["value"],""])
+                except:
+                    pass
+#                    print "Unexpected error:", sys.exc_info()[0]
+        return createMultiJsonObject(entities)
+    
+    
+
+
+
+
+
+
+
 def returnTerminals(classes, properties,language,boolean):
     query = ""
     if boolean == "AND" and len(classes)>1:
@@ -99,25 +149,41 @@ def main():
     language = ""
     boolean = "AND"
     if not debug:
-        try:
-            classes = json.loads(sys.argv[1])
-        except:
-            print "ERROR in json.load()"
-            #sys.exit(1)
+        
+        if len(sys.argv)==3:
+            try:
+                properties = json.loads(sys.argv[1])
+            except:
+                pass
+            try:
+                language = sys.argv[2]
+            except:
+                pass
             
-#        properties are optinal, therefore no error, if empty
-        try:
-            properties = json.loads(sys.argv[2])
-        except:
-            pass
-        try:
-            language = sys.argv[3]
-        except:
-            pass
-        try:
-            boolean = sys.argv[4]
-        except:
-            pass
+            print returnTerminals2(properties,language)
+        
+        else:
+        
+            try:
+                classes = json.loads(sys.argv[1])
+            except:
+                print "ERROR in json.load()"
+                #sys.exit(1)
+                
+    #        properties are optinal, therefore no error, if empty
+            try:
+                properties = json.loads(sys.argv[2])
+            except:
+                pass
+            try:
+                language = sys.argv[3]
+            except:
+                pass
+            try:
+                boolean = sys.argv[4]
+            except:
+                pass
+            print returnTerminals(classes,properties,language,boolean)
         
         
     
@@ -128,12 +194,14 @@ def main():
         properties = []
         language = "zh"
         boolean = "OR"
+        
+#        print returnTerminals2(properties,language)
         #print ("classes",classes)
         #print ("properties",properties)
         #print ("language",language)
         #print ("boolean",boolean) 
     
-    print returnTerminals(classes,properties,language,boolean)
+#        print returnTerminals(classes,properties,language,boolean)
 
     
 
