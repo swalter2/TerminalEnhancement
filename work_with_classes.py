@@ -57,6 +57,22 @@ def return_class_of_resource(label_array):
         non_unique = list(set(non_unique))
         return non_unique
 
+def classSpecial(name):
+    uri_classes = []
+    query = "SELECT DISTINCT ?classes WHERE {?x rdf:type ?classes. FILTER regex(?classes, \"dbpedia.org/ontology\"). FILTER regex(?classes, \""+name+"\")}"
+    #print query
+    sparql.setQuery(query)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+    for result in results["results"]["bindings"]:
+        try:
+            uri_classes.append(result["classes"]["value"])
+            
+        except:
+            pass
+    return uri_classes
+
+    
 def return_properties_of_resource(label_array):
     uri_properties = []
     for label in label_array:
@@ -269,16 +285,23 @@ def main():
     else:
         #resource_array.append("Bruce Lee")
         #resource_array.append("Jackie Chan")
-        resource_array.append("Apple")
-        resource_array.append("Banana")
+        #resource_array.append("Apple")
+        resource_array.append("class:Name")
                 
     class_array = []
     property_array = []
     yago_array = []
     
     try:
-        class_array =return_class_of_resource(resource_array)
-        class_array, yago_array = sortClasses(class_array)
+
+        if len(resource_array)==1 and "class:" in str(resource_array):
+            #print "before special"
+            class_array =classSpecial(resource_array[0].replace("class:",""))
+            #print "after special"
+            class_array, yago_array = sortClasses(class_array)
+        else:
+            class_array =return_class_of_resource(resource_array)
+            class_array, yago_array = sortClasses(class_array)
     except:
         pass
     

@@ -39,8 +39,9 @@ if (! $startpage) {
 	$data = explode(",", $res);
 
 	// Execute the python script with the JSON data
-	$result = shell_exec('python work_with_classes.py ' . escapeshellarg(json_encode($data)));
-	#echo $result;
+	//echo 'python work_with_classes.py ' . escapeshellarg(json_encode($data));
+    $result = shell_exec('python work_with_classes.py ' . escapeshellarg(json_encode($data)));
+	//echo $result;
 	$json_output = json_decode($result, true);
 
 	
