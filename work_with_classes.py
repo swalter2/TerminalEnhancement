@@ -47,7 +47,12 @@ def return_class_of_resource(label_array):
                 pass
 
     if counter < len(label_array):
-        return uri_classes
+        if counter > 1:
+            unique, non_unique = unique_items(uri_classes,counter)
+            non_unique = list(set(non_unique))
+            return non_unique
+        else:
+            return uri_classes
     if len(label_array)==1:
         return uri_classes
     else:
