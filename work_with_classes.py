@@ -286,7 +286,10 @@ def main():
 #                entry = "http://dbpedia.org/resource/"+entry
             if entry.startswith(' '):
                 entry = entry[1:]
-            resource_array.append(entry)
+            if "class:" not in entry:
+                resource_array.append(entry.capitalize())
+            else:
+                resource_array.append(entry)
     else:
         #resource_array.append("Bruce Lee")
         #resource_array.append("Jackie Chan")
