@@ -52,9 +52,11 @@ if (! $startpage) {
 	echo "<br>";
 	echo "Common dbpedia classes:";
 	echo "<br>";
-	echo "(The most general class is on the top, the most specialized class is on the bottom)";
+	echo "(The most 
+    general class is on the top, the most specialized class is on the bottom)";
 	echo "<br>";
-	$classes = array_values($json_output)[1];
+    #$classes = array_values($json_output)[1];
+	$classes = array_values($json_output)[2];
 	foreach($classes as $entry){
 		$uri = array_values($entry)[0];
 		$value = array_values($entry)[2];
@@ -95,7 +97,7 @@ if (! $startpage) {
 	echo "<br>";
 	echo "Common properties:";
 	echo "<br>";
-	$properties = array_values($json_output)[2];
+	$properties = array_values($json_output)[3];
 	foreach($properties as $entry){
 		$uri = array_values($entry)[0];
 		$value = array_values($entry)[1];

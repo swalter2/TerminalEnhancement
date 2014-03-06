@@ -136,31 +136,9 @@ def askSubclass(uri1, uri2):
     return False
 
 
-#def test():
-#    output = {'properties': [],'classes': []}
-#    output['properties'].append({
-#            'url': 'http//test',
-#            'value': 1
-#        })
-#    output['properties'].append({
-#            'url': 'http//test1',
-#            'value': 2
-#        })
-#    output['properties'].append({
-#            'url': 'http//test2',
-#            'value': 3
-#        })
-#    output['classes'].append({
-#            'url': 'http//test/class',
-#        })
-#    
-#    tmp = {"FRONT": "19.50", "RACK": "17.63", "REAR": "21.06", "ROOM": "15.6"}
-#    bulkData = json.dumps(output, ensure_ascii = 'False')
-#    print bulkData
-
     
-def createJsonObject(array_property,array_class,array_yago):
-    output = {'properties': [],'classes': [], 'yago':[]}
+def createJsonObject(array_property,array_class,array_yago, array_category):
+    output = {'properties': [],'classes': [], 'yago':[], 'category':[]}
     for entry in array_property:
         output['properties'].append({
             'url': entry[0],
@@ -179,9 +157,42 @@ def createJsonObject(array_property,array_class,array_yago):
             'value': entry[1],
             'examples': entry[2]
         })
+    for entry in array_category:
+        output['category'].append({
+            'url': entry[0]
+        })
+        
     return json.dumps(output, ensure_ascii = 'False')
 
 
+def getCategories(uri_array):
+    output = []
+    for uri in uri_array:
+        uri = uri.replace(" ","_")
+        uri = "http://dbpedia.org/resource/"+uri
+        query = "select distinct ?x where {<"+uri+"> <http://purl.org/dc/terms/subject> ?x} "
+        try:
+            sparql.setQuery(query)
+            sparql.setReturnFormat(JSON)
+            results = sparql.query().convert()
+            for result in results["results"]["bindings"]:
+                try:
+                    output.append(result["x"]["value"])
+                    
+                except:
+                    pass
+        except:
+            pass
+    hm = {}
+    for x in output:
+        hm[x] = ""
+    output = []
+    for key in hm:
+        output.append(key)
+    return output
+        
+        
+    
 def returnNumberEntities(uri):
     query = "SELECT (COUNT(DISTINCT ?x)) as ?value WHERE {?x rdf:type <"+uri+">}"
     value = 0
@@ -291,14 +302,15 @@ def main():
             else:
                 resource_array.append(entry)
     else:
-        #resource_array.append("Bruce Lee")
-        #resource_array.append("Jackie Chan")
+        resource_array.append("Bruce Lee")
+        resource_array.append("Jackie Chan")
         #resource_array.append("Apple")
-        resource_array.append("class:Name")
+        #resource_array.append("class:Name")
                 
     class_array = []
     property_array = []
     yago_array = []
+    category_array = []
     
     try:
 
@@ -314,11 +326,18 @@ def main():
         pass
     
     try:
-        property_array = return_properties_of_resource(resource_array)
+        if "class:"  not in str(resource_array):
+            property_array = return_properties_of_resource(resource_array)
     except:
         pass
     
-    print createJsonObject(property_array,class_array, yago_array)
+    try:
+        if "class:" not in str(resource_array):
+            category_array = getCategories(resource_array)
+    except:
+        pass
+    
+    print createJsonObject(property_array,class_array, yago_array,category_array)
 
     
 if __name__ == "__main__":
