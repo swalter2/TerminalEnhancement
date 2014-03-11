@@ -159,7 +159,7 @@ def createJsonObject(array_property,array_class,array_yago, array_category):
         })
     for entry in array_category:
         output['category'].append({
-            'url': entry[0]
+            'url': entry
         })
         
     return json.dumps(output, ensure_ascii = 'False')
@@ -188,6 +188,7 @@ def getCategories(uri_array):
         hm[x] = ""
     output = []
     for key in hm:
+        #print ("key",key)
         output.append(key)
     return output
         
@@ -334,6 +335,8 @@ def main():
     try:
         if "class:" not in str(resource_array):
             category_array = getCategories(resource_array)
+            #print ("category_array",category_array)
+            #print
     except:
         pass
     

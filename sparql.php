@@ -119,6 +119,34 @@ if (! $startpage) {
 	
 	echo "<br>";
 	echo "<br>";
+    echo "<br>";
+    echo "<br>";
+    
+    echo "Categories of given input. Please choose either class&property OR category";
+    echo "<br>";
+    $categories = array_values($json_output)[1];
+	foreach($categories as $entry){
+
+		$uri = implode(array_values($entry));
+		$out = "{$uri}";
+		$out_python = $out;
+		$replaceOntology = "http://dbpedia.org/ontology/";
+		$replaceProperty = "http://dbpedia.org/property/";
+		$replaceResoruce= "http://dbpedia.org/resource/";
+		$out = str_replace($replaceProperty,"",$out);
+		$out = str_replace($replaceOntology,"",$out);
+		$out = str_replace($replaceResoruce,"",$out);
+		
+		echo "<input type=\"checkbox\" name=\"setCategory[]\" value=\"$out_python\" id=\"id{ $uri}\" \"/>";
+		echo "<label for=\"id{$uri}\"> $out</label><br>";
+        
+	}
+    
+    
+    echo "<br>";
+	echo "<br>";
+    echo "<br>";
+    echo "<br>";
 
 	#echo "The name of the entities will be in English,<br>";
 	echo "Additional language for terminals (default is English):<br>";
