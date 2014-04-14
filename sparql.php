@@ -104,10 +104,10 @@ if (! $startpage) {
 	echo "<br>";
 	echo "Common properties:";
 	echo "<br>";
+	$properties = array_values($json_output)[3];
     if(empty($properties)){
         echo "No properties were found.";
     }
-	$properties = array_values($json_output)[3];
 	foreach($properties as $entry){
 		$uri = array_values($entry)[0];
 		$value = array_values($entry)[1];
