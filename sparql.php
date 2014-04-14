@@ -57,6 +57,10 @@ if (! $startpage) {
 	echo "<br>";
     #$classes = array_values($json_output)[1];
 	$classes = array_values($json_output)[2];
+    if(empty($classes)){
+        echo "No DBbedia classes were found.";
+    }
+    
 	foreach($classes as $entry){
 		$uri = array_values($entry)[0];
 		$value = array_values($entry)[2];
@@ -73,6 +77,9 @@ if (! $startpage) {
 	echo "Common yago classes:";
 	echo "<br>";
 	$yago = array_values($json_output)[0];
+    if(empty($yago)){
+        echo "No YAGO classes were found.";
+    }
 	foreach($yago as $entry){
 		$uri = array_values($entry)[0];
 		$value = array_values($entry)[2];
@@ -97,6 +104,9 @@ if (! $startpage) {
 	echo "<br>";
 	echo "Common properties:";
 	echo "<br>";
+    if(empty($properties)){
+        echo "No properties were found.";
+    }
 	$properties = array_values($json_output)[3];
 	foreach($properties as $entry){
 		$uri = array_values($entry)[0];
@@ -125,6 +135,9 @@ if (! $startpage) {
     echo "Categories of given input. Please choose either class&property OR category";
     echo "<br>";
     $categories = array_values($json_output)[1];
+    if(empty($categories)){
+        echo "No categories were found.";
+    }
 	foreach($categories as $entry){
 
 		$uri = implode(array_values($entry));
@@ -165,7 +178,12 @@ if (! $startpage) {
 	echo "<label for=\"id{ru}\">Russian</label><br>";
 	echo "<br>";
 	echo "<br>";
-	
+    echo "Maximal number of termials: ";
+    echo "<input id=\"numberterminals\" type=\"text\" name=\"numberterminals\" size=\"10\" maxlength=\"10\" />";
+	echo "<br>";
+    echo "(default is 100)";
+    echo "<br>";
+	echo "<br>";
 	echo "<input type=\"submit\" name=\"submit\" value=\"Submit\"><br>";
 	#echo "Returning the entities in the prefered language, might need some time!";
 	echo "</form>";

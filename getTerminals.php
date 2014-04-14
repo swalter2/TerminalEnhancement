@@ -31,6 +31,11 @@ header('Content-Type: text/html; charset=utf-8');
 		echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
 		echo "</p>";
 		echo "</body>";
+        $numberterminals = 100;
+        if (isset($_POST['numberterminals'])){
+    		$numberterminals = $_POST['numberterminals'];
+    	}
+        
     	$categories = $_POST['setCategory'];
     	$second_language = ($_POST['language']);
     	if($second_language != "none"){
@@ -44,7 +49,7 @@ header('Content-Type: text/html; charset=utf-8');
     	echo "<body> <div id=\"terminal-start\">";
         #echo 'python getTerminals.py category'.' '. escapeshellarg(json_encode($categories)).' '. escapeshellarg($second_language);
     	
-		$result = shell_exec('python getTerminals.py category'.' '. escapeshellarg(json_encode($categories)).' '. escapeshellarg($second_language));
+		$result = shell_exec('python getTerminals.py category'.' '. escapeshellarg(json_encode($categories)).' '. escapeshellarg($second_language).' '. escapeshellarg($numberterminals));
 		#echo $result;
 		$json_output = json_decode($result, true);
 		$entities = array_values($json_output)[0];
@@ -104,6 +109,11 @@ header('Content-Type: text/html; charset=utf-8');
 		echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
 		echo "</p>";
 		echo "</body>";
+        $numberterminals = 100;
+        if (isset($_POST['numberterminals'])){
+    		$numberterminals = $_POST['numberterminals'];
+    	}
+        
     	$classes = $_POST['setClass'];
     	$properties = [];
     	if (isset($_POST['setProperty'])){
@@ -124,7 +134,7 @@ header('Content-Type: text/html; charset=utf-8');
     	
     	echo "<body> <div id=\"terminal-start\">";
     	
-		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($classes)) .' '. escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language).' '. escapeshellarg($boolean));
+		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($classes)) .' '. escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language).' '. escapeshellarg($boolean).' '. escapeshellarg($numberterminals));
 		#echo $result;
 		$json_output = json_decode($result, true);
 		$entities = array_values($json_output)[0];
@@ -180,6 +190,10 @@ header('Content-Type: text/html; charset=utf-8');
 	
 	//here plugin if only a property is choosen
 	elseif (isset($_POST['setProperty'])){
+        $numberterminals = 100;
+        if (isset($_POST['numberterminals'])){
+    		$numberterminals = $_POST['numberterminals'];
+    	}
 		
 		$properties = $_POST['setProperty'];
 		$second_language = ($_POST['language']);
@@ -199,7 +213,7 @@ header('Content-Type: text/html; charset=utf-8');
 		echo "<body> <div id=\"terminal-start\">";
 		
 		
-		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language));
+		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language).' '. escapeshellarg($numberterminals));
 		
 		$json_output = json_decode($result, true);
 		$entities = array_values($json_output)[0];

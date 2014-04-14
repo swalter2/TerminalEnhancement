@@ -31,13 +31,13 @@ def createMultiJsonObject(array):
 
 
 
-def returnTerminals3(categories,language):
+def returnTerminals3(categories,language,number_properties):
     query = ""
         
     if language == "none" or len(language)==0:
         hm = {}
         for entry in categories:
-            query = "select distinct ?entityname where {?entity <http://purl.org/dc/terms/subject> <"+entry+"> . ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")}"
+            query = "select distinct ?entityname where {?entity <http://purl.org/dc/terms/subject> <"+entry+"> . ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")} LIMIT "+str(number_properties)
             sparql.setQuery(query)
             sparql.setReturnFormat(JSON)
             results = sparql.query().convert()
@@ -54,7 +54,7 @@ def returnTerminals3(categories,language):
     else:
         hm = {}
         for entry in categories:
-            query = "SELECT DISTINCT ?entityname ?entityname2 WHERE{?entity <http://purl.org/dc/terms/subject> <"+entry+"> . ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\") . OPTIONAL{ ?entity rdfs:label ?entityname2. FILTER (lang(?entityname2) = \""+language+"\")}}"
+            query = "SELECT DISTINCT ?entityname ?entityname2 WHERE{?entity <http://purl.org/dc/terms/subject> <"+entry+"> . ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\") . OPTIONAL{ ?entity rdfs:label ?entityname2. FILTER (lang(?entityname2) = \""+language+"\")}} LIMIT "+str(number_properties)
             sparql.setQuery(query)
     #        print query
             sparql.setReturnFormat(JSON)
@@ -81,7 +81,7 @@ def returnTerminals3(categories,language):
 
 
 
-def returnTerminals2(properties,language):
+def returnTerminals2(properties,language,number_properties):
     query = ""
     for x in properties:
         tmp = x.split(" with ")
@@ -91,7 +91,7 @@ def returnTerminals2(properties,language):
             query += " ?entity <"+tmp[0]+">  <"+tmp[1]+"> . "
         
     if language == "none" or len(language)==0:
-        query = "SELECT DISTINCT ?entityname WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")}"
+        query = "SELECT DISTINCT ?entityname WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")} LIMIT "+str(number_properties)
         sparql.setQuery(query)
 #        print query
         sparql.setReturnFormat(JSON)
@@ -105,7 +105,7 @@ def returnTerminals2(properties,language):
                 pass
         return createJsonObject(entities)
     else:
-        query = "SELECT DISTINCT ?entityname ?entityname2 WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\") . OPTIONAL{ ?entity rdfs:label ?entityname2. FILTER (lang(?entityname2) = \""+language+"\")}}"
+        query = "SELECT DISTINCT ?entityname ?entityname2 WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\") . OPTIONAL{ ?entity rdfs:label ?entityname2. FILTER (lang(?entityname2) = \""+language+"\")}} LIMIT "+str(number_properties)
         sparql.setQuery(query)
 #        print query
         sparql.setReturnFormat(JSON)
@@ -131,7 +131,7 @@ def returnTerminals2(properties,language):
 
 
 
-def returnTerminals(classes, properties,language,boolean):
+def returnTerminals(classes, properties,language,boolean,number_properties):
     query = ""
     if boolean == "AND" and len(classes)>1:
         for x in classes:
@@ -160,7 +160,7 @@ def returnTerminals(classes, properties,language,boolean):
             query += " ?entity <"+tmp[0]+">  <"+tmp[1]+"> . "
         
     if language == "none" or len(language)==0:
-        query = "SELECT DISTINCT ?entityname WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")}"
+        query = "SELECT DISTINCT ?entityname WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\")}  LIMIT "+str(number_properties)
         sparql.setQuery(query)
         #print query
         sparql.setReturnFormat(JSON)
@@ -174,7 +174,7 @@ def returnTerminals(classes, properties,language,boolean):
                 pass
         return createJsonObject(entities)
     else:
-        query = "SELECT DISTINCT ?entityname ?entityname2 WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\") . OPTIONAL{ ?entity rdfs:label ?entityname2. FILTER (lang(?entityname2) = \""+language+"\")}}"
+        query = "SELECT DISTINCT ?entityname ?entityname2 WHERE{"+query+" ?entity rdfs:label ?entityname. FILTER (lang(?entityname) = \"en\") . OPTIONAL{ ?entity rdfs:label ?entityname2. FILTER (lang(?entityname2) = \""+language+"\")}} LIMIT "+str(number_properties)
         sparql.setQuery(query)
         #print query
         sparql.setReturnFormat(JSON)
@@ -198,6 +198,7 @@ def main():
     properties = []
     categories = []
     resource_array = []
+    number_properties = 100;
     language = ""
     boolean = "AND"
     if not debug:
@@ -211,9 +212,14 @@ def main():
             except:
                 pass
             
-            print returnTerminals3(categories,language)
+            try:
+                number_properties = int(sys.argv[4])
+            except:
+                pass
+            
+            print returnTerminals3(categories,language,number_properties)
         
-        elif len(sys.argv)==3:
+        elif len(sys.argv)==4:
             try:
                 properties = json.loads(sys.argv[1])
             except:
@@ -223,7 +229,12 @@ def main():
             except:
                 pass
             
-            print returnTerminals2(properties,language)
+            try:
+                number_properties = int(sys.argv[3])
+            except:
+                pass
+            
+            print returnTerminals2(properties,language,number_properties)
         
         else:
         
@@ -246,7 +257,13 @@ def main():
                 boolean = sys.argv[4]
             except:
                 pass
-            print returnTerminals(classes,properties,language,boolean)
+            
+            try:
+                number_properties = int(sys.argv[5])
+            except:
+                pass
+            
+            print returnTerminals(classes,properties,language,boolean,number_properties)
         
         
     
