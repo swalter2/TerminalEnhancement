@@ -21,16 +21,39 @@ header('Content-Type: text/html; charset=utf-8');
 		
 
 	<?php
-    if (isset($_POST['setClass']) && isset($_POST['setCategory'])){
+        if(isset($_POST['setTerminals'])){
+            echo "<body>";
+            echo "<p>";
+            echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
+            echo "</p>";
+            echo "</body>";
+            $abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
+            $terminals = $_POST['setTerminals'];
+            foreach($terminals as $entry){
+                $abnf ="{$abnf} {$entry} | ";
+            
+                
+            }
+            
+            $abnf ="{$abnf};";
+            $abnf = str_replace("| ;",";",$abnf);
+            $abnf = str_replace("|   ","",$abnf);
+            $out = fopen('terminals.txt', 'w') or die("can't open file");
+            fwrite($out, $abnf);
+            fclose($out);
+            
+            
+        }
+    elseif (isset($_POST['setClass']) && isset($_POST['setCategory'])){
         
         echo "Please choose either Classes or Categories.";
     }
     elseif (isset($_POST['setCategory'])){
-        echo "<body>";
-		echo "<p>";
-		echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
-		echo "</p>";
-		echo "</body>";
+        #echo "<body>";
+		#echo "<p>";
+		#echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
+		#echo "</p>";
+		#echo "</body>";
         $numberterminals = 100;
         if (isset($_POST['numberterminals'])){
     		$numberterminals = $_POST['numberterminals'];
@@ -38,15 +61,16 @@ header('Content-Type: text/html; charset=utf-8');
         
     	$categories = $_POST['setCategory'];
     	$second_language = ($_POST['language']);
-    	if($second_language != "none"){
-    		echo "<body>";
-    		echo "<p>";
-    		echo "<a href=\"terminals".$second_language.".txt\">Download Terminal-ABNF for the additional language</a>";
-    		echo "</p>";
-    		echo "</body>";
-    	}
+    	#if($second_language != "none"){
+    	#	echo "<body>";
+    	#	echo "<p>";
+    	#	echo "<a href=\"terminals".$second_language.".txt\">Download Terminal-ABNF for the additional language</a>";
+    	#	echo "</p>";
+    	#	echo "</body>";
+    	#}
     	
     	echo "<body> <div id=\"terminal-start\">";
+        echo "<form action=\"getTerminals.php\" method=\"post\">";
         #echo 'python getTerminals.py category'.' '. escapeshellarg(json_encode($categories)).' '. escapeshellarg($second_language);
     	
 		$result = shell_exec('python getTerminals.py category'.' '. escapeshellarg(json_encode($categories)).' '. escapeshellarg($second_language).' '. escapeshellarg($numberterminals));
@@ -77,7 +101,7 @@ header('Content-Type: text/html; charset=utf-8');
 			}
 			else{
 				$name = array_values($entry)[0];
-				echo $name;
+				#echo $name;
                 echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
                 echo "<label for=\"id{$name}\"> $name</label><br>";
 			}
@@ -88,21 +112,23 @@ header('Content-Type: text/html; charset=utf-8');
 			}
             
 		}
-		$abnf ="{$abnf};";
-		$abnf = str_replace("| ;",";",$abnf);
-		$abnf = str_replace("|   ","",$abnf);
-		$out = fopen('terminals.txt', 'w') or die("can't open file");
-		fwrite($out, $abnf);
-		fclose($out);
-		
-		if($second_language != "none"){
-			$abnf2 ="{$abnf2};";
-			$abnf2 = str_replace("| ;",";",$abnf2);
-			$abnf2 = str_replace("|   ","",$abnf2);
-			$out = fopen("terminals".$second_language.".txt", 'w') or die("can't open file");
-			fwrite($out, $abnf2);
-			fclose($out);
-		}
+		#$abnf ="{$abnf};";
+		#$abnf = str_replace("| ;",";",$abnf);
+		#$abnf = str_replace("|   ","",$abnf);
+		#$out = fopen('terminals.txt', 'w') or die("can't open file");
+		#fwrite($out, $abnf);
+		#fclose($out);
+		#
+		#if($second_language != "none"){
+		#	$abnf2 ="{$abnf2};";
+		#	$abnf2 = str_replace("| ;",";",$abnf2);
+		#	$abnf2 = str_replace("|   ","",$abnf2);
+		#	$out = fopen("terminals".$second_language.".txt", 'w') or die("can't open file");
+		#	fwrite($out, $abnf2);
+		#	fclose($out);
+		#}
+        echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
+        echo "</form>";
 		
 		
 		
@@ -110,11 +136,11 @@ header('Content-Type: text/html; charset=utf-8');
 	}
         
 	elseif (isset($_POST['setClass'])){
-		echo "<body>";
-		echo "<p>";
-		echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
-		echo "</p>";
-		echo "</body>";
+		#echo "<body>";
+		#echo "<p>";
+		#echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
+		#echo "</p>";
+		#echo "</body>";
         $numberterminals = 100;
         if (isset($_POST['numberterminals'])){
     		$numberterminals = $_POST['numberterminals'];
@@ -130,15 +156,16 @@ header('Content-Type: text/html; charset=utf-8');
     	}
     	$second_language = ($_POST['language']);
     	$boolean = ($_POST['boolean']);
-    	if($second_language != "none"){
-    		echo "<body>";
-    		echo "<p>";
-    		echo "<a href=\"terminals".$second_language.".txt\">Download Terminal-ABNF for the additional language</a>";
-    		echo "</p>";
-    		echo "</body>";
-    	}
+    	#if($second_language != "none"){
+    	#	echo "<body>";
+    	#	echo "<p>";
+    	#	echo "<a href=\"terminals".$second_language.".txt\">Download Terminal-ABNF for the additional language</a>";
+    	#	echo "</p>";
+    	#	echo "</body>";
+    	#}
     	
     	echo "<body> <div id=\"terminal-start\">";
+        echo "<form action=\"getTerminals.php\" method=\"post\">";
     	
 		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($classes)) .' '. escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language).' '. escapeshellarg($boolean).' '. escapeshellarg($numberterminals));
 		#echo $result;
@@ -168,7 +195,7 @@ header('Content-Type: text/html; charset=utf-8');
 			}
 			else{
 				$name = array_values($entry)[0];
-				echo $name;
+				#echo $name;
                 echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
                 echo "<label for=\"id{$name}\"> $name</label><br>";
 			}
@@ -179,21 +206,23 @@ header('Content-Type: text/html; charset=utf-8');
 			}
 				
 		}
-		$abnf ="{$abnf};";
-		$abnf = str_replace("| ;",";",$abnf);
-		$abnf = str_replace("|   ","",$abnf);
-		$out = fopen('terminals.txt', 'w') or die("can't open file");
-		fwrite($out, $abnf);
-		fclose($out);
-		
-		if($second_language != "none"){
-			$abnf2 ="{$abnf2};";
-			$abnf2 = str_replace("| ;",";",$abnf2);
-			$abnf2 = str_replace("|   ","",$abnf2);
-			$out = fopen("terminals".$second_language.".txt", 'w') or die("can't open file");
-			fwrite($out, $abnf2);
-			fclose($out);
-		}
+		#$abnf ="{$abnf};";
+		#$abnf = str_replace("| ;",";",$abnf);
+		#$abnf = str_replace("|   ","",$abnf);
+		#$out = fopen('terminals.txt', 'w') or die("can't open file");
+		#fwrite($out, $abnf);
+		#fclose($out);
+		#
+		#if($second_language != "none"){
+        #		$abnf2 ="{$abnf2};";
+        #		$abnf2 = str_replace("| ;",";",$abnf2);
+		#	$abnf2 = str_replace("|   ","",$abnf2);
+		#	$out = fopen("terminals".$second_language.".txt", 'w') or die("can't open file");
+		#	fwrite($out, $abnf2);
+		#	fclose($out);
+		#}
+        echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
+        echo "</form>";
 		
 		
 		
@@ -209,20 +238,21 @@ header('Content-Type: text/html; charset=utf-8');
 		
 		$properties = $_POST['setProperty'];
 		$second_language = ($_POST['language']);
-		echo "<body>";
-		echo "<p>";
-		echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
-		echo "</p>";
-		echo "</body>";
-		if($second_language != "none"){
-			echo "<body>";
-			echo "<p>";
-			echo "<a href=\"terminals".$second_language.".txt\">Download Terminal-ABNF for the additional language</a>";
-			echo "</p>";
-			echo "</body>";
-		}
+		#echo "<body>";
+		#echo "<p>";
+		#echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
+		#echo "</p>";
+		#echo "</body>";
+		#if($second_language != "none"){
+        #	echo "<body>";
+		#	echo "<p>";
+		#	echo "<a href=\"terminals".$second_language.".txt\">Download Terminal-ABNF for the additional language</a>";
+		#	echo "</p>";
+		#	echo "</body>";
+		#}
 		 
 		echo "<body> <div id=\"terminal-start\">";
+        echo "<form action=\"getTerminals.php\" method=\"post\">";
 		
 		
 		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language).' '. escapeshellarg($numberterminals));
@@ -258,21 +288,23 @@ header('Content-Type: text/html; charset=utf-8');
 			}
 		
 		}
-		$abnf ="{$abnf};";
-		$abnf = str_replace("| ;",";",$abnf);
-		$abnf = str_replace("|   ","",$abnf);
-		$out = fopen('terminals.txt', 'w') or die("can't open file");
-		fwrite($out, $abnf);
-		fclose($out);
+		#$abnf ="{$abnf};";
+		#$abnf = str_replace("| ;",";",$abnf);
+		#$abnf = str_replace("|   ","",$abnf);
+		#$out = fopen('terminals.txt', 'w') or die("can't open file");
+		#fwrite($out, $abnf);
+		#fclose($out);
 		
-		if($second_language != "none"){
-			$abnf2 ="{$abnf2};";
-			$abnf2 = str_replace("| ;",";",$abnf2);
-			$abnf2 = str_replace("|   ","",$abnf2);
-			$out = fopen("terminals".$second_language.".txt", 'w') or die("can't open file");
-			fwrite($out, $abnf2);
-			fclose($out);
-		}
+		#if($second_language != "none"){
+		#	$abnf2 ="{$abnf2};";
+		#	$abnf2 = str_replace("| ;",";",$abnf2);
+		#	$abnf2 = str_replace("|   ","",$abnf2);
+		#	$out = fopen("terminals".$second_language.".txt", 'w') or die("can't open file");
+		#	fwrite($out, $abnf2);
+		#	fclose($out);
+		#}
+        echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
+        echo "</form>";
 		
 		
 		
@@ -281,6 +313,8 @@ header('Content-Type: text/html; charset=utf-8');
 	else{
 		echo "Choose a class";
 	}
+    
+    echo "</div></body>";
 	
 	?>
 	
