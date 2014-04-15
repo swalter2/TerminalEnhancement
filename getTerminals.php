@@ -64,16 +64,22 @@ header('Content-Type: text/html; charset=utf-8');
 			$name2= "";
 			if (count(array_values($entry))==2){
 				$name = array_values($entry)[1];
-				echo $name;
-				$tmp = array_values($entry)[0];
+				#echo $name;
+                $tmp = array_values($entry)[0];
 				if (count($tmp)>0 && $tmp!=""){
-					echo " -- ".$tmp;
+					#echo " -- ".$tmp;
 					$name2 = $tmp;
+                    $name = $name." -- ".$tmp;
 				}
+                
+                echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label><br>";
 			}
 			else{
 				$name = array_values($entry)[0];
 				echo $name;
+                echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label><br>";
 			}
 			echo "<br>";
 			$abnf ="{$abnf} {$name} | ";
@@ -149,16 +155,22 @@ header('Content-Type: text/html; charset=utf-8');
 			$name2= "";
 			if (count(array_values($entry))==2){
 				$name = array_values($entry)[1];
-				echo $name;
-				$tmp = array_values($entry)[0];
+				#echo $name;
+                $tmp = array_values($entry)[0];
 				if (count($tmp)>0 && $tmp!=""){
-					echo " -- ".$tmp;
+					#echo " -- ".$tmp;
 					$name2 = $tmp;
+                    $name = $name." -- ".$tmp;
 				}
+                
+                echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label><br>";
 			}
 			else{
 				$name = array_values($entry)[0];
 				echo $name;
+                echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label><br>";
 			}
 			echo "<br>";
 			$abnf ="{$abnf} {$name} | ";

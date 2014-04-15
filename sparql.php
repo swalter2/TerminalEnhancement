@@ -178,7 +178,7 @@ if (! $startpage) {
 	echo "<label for=\"id{ru}\">Russian</label><br>";
 	echo "<br>";
 	echo "<br>";
-    echo "Maximal number of termials: ";
+    echo "Maximal number of terminals: ";
     echo "<input id=\"numberterminals\" type=\"text\" name=\"numberterminals\" size=\"10\" maxlength=\"10\" />";
 	echo "<br>";
     echo "(default is 100)";
