@@ -21,26 +21,57 @@ header('Content-Type: text/html; charset=utf-8');
 		
 
 	<?php
-        if(isset($_POST['setTerminals'])){
+        if(isset($_POST['setTerminals'])|| isset($_POST['setTerminals2'])){
+            
             echo "<body>";
             echo "<p>";
-            echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
-            echo "</p>";
-            echo "</body>";
-            $abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
-            $terminals = $_POST['setTerminals'];
-            foreach($terminals as $entry){
-                $abnf ="{$abnf} {$entry} | ";
-            
+            if(isset($_POST['setTerminals'])){
+                
+                echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
+                
+                $abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
+                $terminals = $_POST['setTerminals'];
+                foreach($terminals as $entry){
+                    $abnf ="{$abnf} {$entry} | ";
+                    
+                    
+                }
+                
+                $abnf ="{$abnf};";
+                $abnf = str_replace("| ;",";",$abnf);
+                $abnf = str_replace("|   ","",$abnf);
+                $out = fopen('terminals.txt', 'w') or die("can't open file");
+                fwrite($out, $abnf);
+                fclose($out);
+                
                 
             }
             
-            $abnf ="{$abnf};";
-            $abnf = str_replace("| ;",";",$abnf);
-            $abnf = str_replace("|   ","",$abnf);
-            $out = fopen('terminals.txt', 'w') or die("can't open file");
-            fwrite($out, $abnf);
-            fclose($out);
+            if(isset($_POST['setTerminals2'])){
+                
+                echo "<a href=\"terminals2.txt\">Download Terminal-ABNF for second language</a>";
+                
+                $abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
+                $terminals = $_POST['setTerminals2'];
+                foreach($terminals as $entry){
+                    $abnf ="{$abnf} {$entry} | ";
+                    
+                    
+                }
+                
+                $abnf ="{$abnf};";
+                $abnf = str_replace("| ;",";",$abnf);
+                $abnf = str_replace("|   ","",$abnf);
+                $out = fopen('terminals2.txt', 'w') or die("can't open file");
+                fwrite($out, $abnf);
+                fclose($out);
+                
+                
+            }
+            
+            
+            echo "</p>";
+            echo "</body>";
             
             
         }
@@ -93,24 +124,26 @@ header('Content-Type: text/html; charset=utf-8');
 				if (count($tmp)>0 && $tmp!=""){
 					#echo " -- ".$tmp;
 					$name2 = $tmp;
-                    $name = $name." -- ".$tmp;
+                    #$name = $name." -- ".$tmp;
+                    echo "<input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
+                    echo "<label for=\"id{$name2}\"> $name2</label>";
 				}
                 
                 echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label><br>";
+                echo "<label for=\"id{$name}\"> $name</label>";
 			}
 			else{
 				$name = array_values($entry)[0];
 				#echo $name;
                 echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label><br>";
+                echo "<label for=\"id{$name}\"> $name</label>";
 			}
 			echo "<br>";
 			$abnf ="{$abnf} {$name} | ";
 			if (count($name2)>0){
 				$abnf2 ="{$abnf2} {$name2} | ";
 			}
-            
+            echo "<br>";
 		}
 		#$abnf ="{$abnf};";
 		#$abnf = str_replace("| ;",";",$abnf);
@@ -187,23 +220,26 @@ header('Content-Type: text/html; charset=utf-8');
 				if (count($tmp)>0 && $tmp!=""){
 					#echo " -- ".$tmp;
 					$name2 = $tmp;
-                    $name = $name." -- ".$tmp;
+                    #$name = $name." -- ".$tmp;
+                    echo "<input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
+                    echo "<label for=\"id{$name2}\"> $name2</label>";
 				}
                 
                 echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label><br>";
+                echo "<label for=\"id{$name}\"> $name</label>";
 			}
 			else{
 				$name = array_values($entry)[0];
 				#echo $name;
                 echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label><br>";
+                echo "<label for=\"id{$name}\"> $name</label>";
 			}
 			echo "<br>";
 			$abnf ="{$abnf} {$name} | ";
 			if (count($name2)>0){
 				$abnf2 ="{$abnf2} {$name2} | ";
 			}
+            echo "<br>";
 				
 		}
 		#$abnf ="{$abnf};";
@@ -270,23 +306,30 @@ header('Content-Type: text/html; charset=utf-8');
 			$name2= "";
 			if (count(array_values($entry))==2){
 				$name = array_values($entry)[1];
-				echo $name;
-				$tmp = array_values($entry)[0];
+				#echo $name;
+                $tmp = array_values($entry)[0];
 				if (count($tmp)>0 && $tmp!=""){
-					echo " -- ".$tmp;
+					#echo " -- ".$tmp;
 					$name2 = $tmp;
+                    #$name = $name." -- ".$tmp;
+                    echo "<input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
+                    echo "<label for=\"id{$name2}\"> $name2</label>";
 				}
+                
+                echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label>";
 			}
 			else{
 				$name = array_values($entry)[0];
-				echo $name;
+				echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label>";
 			}
 			echo "<br>";
 			$abnf ="{$abnf} {$name} | ";
 			if (count($name2)>0){
 				$abnf2 ="{$abnf2} {$name2} | ";
 			}
-		
+            echo "<br>";
 		}
 		#$abnf ="{$abnf};";
 		#$abnf = str_replace("| ;",";",$abnf);
