@@ -46,6 +46,8 @@ header('Content-Type: text/html; charset=utf-8');
                 
                 
             }
+            echo "<br>";
+            echo "<br>";
             
             if(isset($_POST['setTerminals2'])){
                 
