@@ -104,6 +104,10 @@ header('Content-Type: text/html; charset=utf-8');
 		echo "<br>";
 		echo "<br>";
         echo "<table border=\"0\">";
+        echo "<tr>";
+        echo "<td><h2>en</h2></td>";
+        echo "<td><h2>$second_language</h2></td>";
+        echo "</tr>";
 		$abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
 		$abnf2 = "#ABNF 1.0 UTF-8; \n Terminals = ";
 		foreach($entities as $entry){
@@ -113,6 +117,8 @@ header('Content-Type: text/html; charset=utf-8');
 			if (count(array_values($entry))==2){
 				$name = array_values($entry)[1];
 				#echo $name;
+                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label></td>";
                 $tmp = array_values($entry)[0];
 				if (count($tmp)>0 && $tmp!=""){
 					#echo " -- ".$tmp;
@@ -122,14 +128,14 @@ header('Content-Type: text/html; charset=utf-8');
                     echo "<label for=\"id{$name2}\"> $name2</label></td>";
 				}
                 
-                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label></td>";
+                
 			}
 			else{
 				$name = array_values($entry)[0];
 				#echo $name;
                 echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
                 echo "<label for=\"id{$name}\"> $name</label></td>";
+                echo "<td></td>";
 			}
 			#echo "<br>";
             echo "</tr>";
@@ -180,6 +186,10 @@ header('Content-Type: text/html; charset=utf-8');
 		$abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
 		$abnf2 = "#ABNF 1.0 UTF-8; \n Terminals = ";
         echo "<table border=\"0\">";
+        echo "<tr>";
+        echo "<td><h2>en</h2></td>";
+        echo "<td><h2>$second_language</h2></td>";
+        echo "</tr>";
 		foreach($entities as $entry){
             echo "<tr>";
 			$name= "";
@@ -187,6 +197,8 @@ header('Content-Type: text/html; charset=utf-8');
 			if (count(array_values($entry))==2){
 				$name = array_values($entry)[1];
 				#echo $name;
+                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label></td>";
                 $tmp = array_values($entry)[0];
 				if (count($tmp)>0 && $tmp!=""){
 					#echo " -- ".$tmp;
@@ -196,14 +208,14 @@ header('Content-Type: text/html; charset=utf-8');
                     echo "<label for=\"id{$name2}\"> $name2</label></td>";
 				}
                 
-                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label></td>";
+                
 			}
 			else{
 				$name = array_values($entry)[0];
 				#echo $name;
                 echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
                 echo "<label for=\"id{$name}\"> $name</label></td>";
+                echo "<td></td>";
 			}
 			#echo "<br>";
             echo "</tr>";
@@ -250,6 +262,10 @@ header('Content-Type: text/html; charset=utf-8');
 		$abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
 		$abnf2 = "#ABNF 1.0 UTF-8; \n Terminals = ";
         echo "<table border=\"0\">";
+        echo "<tr>";
+        echo "<td><h2>en</h2></td>";
+        echo "<td><h2>$second_language</h2></td>";
+        echo "</tr>";
 		foreach($entities as $entry){
             echo "<tr>";
 			$name= "";
@@ -257,6 +273,8 @@ header('Content-Type: text/html; charset=utf-8');
 			if (count(array_values($entry))==2){
 				$name = array_values($entry)[1];
 				#echo $name;
+                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label></td>";
                 $tmp = array_values($entry)[0];
 				if (count($tmp)>0 && $tmp!=""){
 					#echo " -- ".$tmp;
@@ -266,13 +284,13 @@ header('Content-Type: text/html; charset=utf-8');
                     echo "<label for=\"id{$name2}\"> $name2</label></td>";
 				}
                 
-                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label></td>";
+                
 			}
 			else{
 				$name = array_values($entry)[0];
 				echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
                 echo "<label for=\"id{$name}\"> $name</label></td>";
+                echo "<td></td>";
 			}
 			#echo "<br>";
             echo "</tr>";
