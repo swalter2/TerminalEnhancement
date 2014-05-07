@@ -82,11 +82,7 @@ header('Content-Type: text/html; charset=utf-8');
         echo "Please choose either Classes or Categories.";
     }
     elseif (isset($_POST['setCategory'])){
-        #echo "<body>";
-		#echo "<p>";
-		#echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
-		#echo "</p>";
-		#echo "</body>";
+        
         $numberterminals = 100;
         if (isset($_POST['numberterminals'])){
     		$numberterminals = $_POST['numberterminals'];
@@ -94,13 +90,6 @@ header('Content-Type: text/html; charset=utf-8');
         
     	$categories = $_POST['setCategory'];
     	$second_language = ($_POST['language']);
-    	#if($second_language != "none"){
-    	#	echo "<body>";
-    	#	echo "<p>";
-    	#	echo "<a href=\"terminals".$second_language.".txt\">Download Terminal-ABNF for the additional language</a>";
-    	#	echo "</p>";
-    	#	echo "</body>";
-    	#}
     	
     	echo "<body> <div id=\"terminal-start\">";
         echo "<form action=\"getTerminals.php\" method=\"post\">";
@@ -114,9 +103,11 @@ header('Content-Type: text/html; charset=utf-8');
 		echo "Retrieved ".count($entities)." terminals";
 		echo "<br>";
 		echo "<br>";
+        echo "<table border=\"0\">";
 		$abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
 		$abnf2 = "#ABNF 1.0 UTF-8; \n Terminals = ";
 		foreach($entities as $entry){
+            echo "<tr>";
 			$name= "";
 			$name2= "";
 			if (count(array_values($entry))==2){
@@ -127,41 +118,28 @@ header('Content-Type: text/html; charset=utf-8');
 					#echo " -- ".$tmp;
 					$name2 = $tmp;
                     #$name = $name." -- ".$tmp;
-                    echo "<input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
-                    echo "<label for=\"id{$name2}\"> $name2</label>";
+                    echo "<td><input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
+                    echo "<label for=\"id{$name2}\"> $name2</label></td>";
 				}
                 
-                echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label>";
+                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label></td>";
 			}
 			else{
 				$name = array_values($entry)[0];
 				#echo $name;
-                echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label>";
+                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label></td>";
 			}
-			echo "<br>";
+			#echo "<br>";
+            echo "</tr>";
 			$abnf ="{$abnf} {$name} | ";
 			if (count($name2)>0){
 				$abnf2 ="{$abnf2} {$name2} | ";
 			}
             #echo "<br>";
 		}
-		#$abnf ="{$abnf};";
-		#$abnf = str_replace("| ;",";",$abnf);
-		#$abnf = str_replace("|   ","",$abnf);
-		#$out = fopen('terminals.txt', 'w') or die("can't open file");
-		#fwrite($out, $abnf);
-		#fclose($out);
-		#
-		#if($second_language != "none"){
-		#	$abnf2 ="{$abnf2};";
-		#	$abnf2 = str_replace("| ;",";",$abnf2);
-		#	$abnf2 = str_replace("|   ","",$abnf2);
-		#	$out = fopen("terminals".$second_language.".txt", 'w') or die("can't open file");
-		#	fwrite($out, $abnf2);
-		#	fclose($out);
-		#}
+        echo "</table>";
         echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
         echo "</form>";
 		
@@ -171,11 +149,6 @@ header('Content-Type: text/html; charset=utf-8');
 	}
         
 	elseif (isset($_POST['setClass'])){
-		#echo "<body>";
-		#echo "<p>";
-		#echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
-		#echo "</p>";
-		#echo "</body>";
         $numberterminals = 100;
         if (isset($_POST['numberterminals'])){
     		$numberterminals = $_POST['numberterminals'];
@@ -191,13 +164,7 @@ header('Content-Type: text/html; charset=utf-8');
     	}
     	$second_language = ($_POST['language']);
     	$boolean = ($_POST['boolean']);
-    	#if($second_language != "none"){
-    	#	echo "<body>";
-    	#	echo "<p>";
-    	#	echo "<a href=\"terminals".$second_language.".txt\">Download Terminal-ABNF for the additional language</a>";
-    	#	echo "</p>";
-    	#	echo "</body>";
-    	#}
+
     	
     	echo "<body> <div id=\"terminal-start\">";
         echo "<form action=\"getTerminals.php\" method=\"post\">";
@@ -212,7 +179,9 @@ header('Content-Type: text/html; charset=utf-8');
 		echo "<br>";
 		$abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
 		$abnf2 = "#ABNF 1.0 UTF-8; \n Terminals = ";
+        echo "<table border=\"0\">";
 		foreach($entities as $entry){
+            echo "<tr>";
 			$name= "";
 			$name2= "";
 			if (count(array_values($entry))==2){
@@ -223,20 +192,22 @@ header('Content-Type: text/html; charset=utf-8');
 					#echo " -- ".$tmp;
 					$name2 = $tmp;
                     #$name = $name." -- ".$tmp;
-                    echo "<input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
-                    echo "<label for=\"id{$name2}\"> $name2</label>";
+                    echo "<td><input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
+                    echo "<label for=\"id{$name2}\"> $name2</label></td>";
 				}
                 
-                echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label>";
+                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label></td>";
 			}
 			else{
 				$name = array_values($entry)[0];
 				#echo $name;
-                echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label>";
+                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label></td>";
 			}
-			echo "<br>";
+			#echo "<br>";
+            echo "</tr>";
+
 			$abnf ="{$abnf} {$name} | ";
 			if (count($name2)>0){
 				$abnf2 ="{$abnf2} {$name2} | ";
@@ -244,21 +215,7 @@ header('Content-Type: text/html; charset=utf-8');
             #echo "<br>";
 				
 		}
-		#$abnf ="{$abnf};";
-		#$abnf = str_replace("| ;",";",$abnf);
-		#$abnf = str_replace("|   ","",$abnf);
-		#$out = fopen('terminals.txt', 'w') or die("can't open file");
-		#fwrite($out, $abnf);
-		#fclose($out);
-		#
-		#if($second_language != "none"){
-        #		$abnf2 ="{$abnf2};";
-        #		$abnf2 = str_replace("| ;",";",$abnf2);
-		#	$abnf2 = str_replace("|   ","",$abnf2);
-		#	$out = fopen("terminals".$second_language.".txt", 'w') or die("can't open file");
-		#	fwrite($out, $abnf2);
-		#	fclose($out);
-		#}
+        echo "</table>";
         echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
         echo "</form>";
 		
@@ -276,18 +233,7 @@ header('Content-Type: text/html; charset=utf-8');
 		
 		$properties = $_POST['setProperty'];
 		$second_language = ($_POST['language']);
-		#echo "<body>";
-		#echo "<p>";
-		#echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
-		#echo "</p>";
-		#echo "</body>";
-		#if($second_language != "none"){
-        #	echo "<body>";
-		#	echo "<p>";
-		#	echo "<a href=\"terminals".$second_language.".txt\">Download Terminal-ABNF for the additional language</a>";
-		#	echo "</p>";
-		#	echo "</body>";
-		#}
+
 		 
 		echo "<body> <div id=\"terminal-start\">";
         echo "<form action=\"getTerminals.php\" method=\"post\">";
@@ -303,7 +249,9 @@ header('Content-Type: text/html; charset=utf-8');
 		echo "<br>";
 		$abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
 		$abnf2 = "#ABNF 1.0 UTF-8; \n Terminals = ";
+        echo "<table border=\"0\">";
 		foreach($entities as $entry){
+            echo "<tr>";
 			$name= "";
 			$name2= "";
 			if (count(array_values($entry))==2){
@@ -314,40 +262,27 @@ header('Content-Type: text/html; charset=utf-8');
 					#echo " -- ".$tmp;
 					$name2 = $tmp;
                     #$name = $name." -- ".$tmp;
-                    echo "<input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
-                    echo "<label for=\"id{$name2}\"> $name2</label>";
+                    echo "<td><input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
+                    echo "<label for=\"id{$name2}\"> $name2</label></td>";
 				}
                 
-                echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label>";
+                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label></td>";
 			}
 			else{
 				$name = array_values($entry)[0];
-				echo "<input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label>";
+				echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
+                echo "<label for=\"id{$name}\"> $name</label></td>";
 			}
-			echo "<br>";
+			#echo "<br>";
+            echo "</tr>";
 			$abnf ="{$abnf} {$name} | ";
 			if (count($name2)>0){
 				$abnf2 ="{$abnf2} {$name2} | ";
 			}
             #echo "<br>";
 		}
-		#$abnf ="{$abnf};";
-		#$abnf = str_replace("| ;",";",$abnf);
-		#$abnf = str_replace("|   ","",$abnf);
-		#$out = fopen('terminals.txt', 'w') or die("can't open file");
-		#fwrite($out, $abnf);
-		#fclose($out);
-		
-		#if($second_language != "none"){
-		#	$abnf2 ="{$abnf2};";
-		#	$abnf2 = str_replace("| ;",";",$abnf2);
-		#	$abnf2 = str_replace("|   ","",$abnf2);
-		#	$out = fopen("terminals".$second_language.".txt", 'w') or die("can't open file");
-		#	fwrite($out, $abnf2);
-		#	fclose($out);
-		#}
+        echo "</table>";
         echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
         echo "</form>";
 		
