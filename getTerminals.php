@@ -145,7 +145,7 @@ header('Content-Type: text/html; charset=utf-8');
 			if (count($name2)>0){
 				$abnf2 ="{$abnf2} {$name2} | ";
 			}
-            echo "<br>";
+            #echo "<br>";
 		}
 		#$abnf ="{$abnf};";
 		#$abnf = str_replace("| ;",";",$abnf);
@@ -241,7 +241,7 @@ header('Content-Type: text/html; charset=utf-8');
 			if (count($name2)>0){
 				$abnf2 ="{$abnf2} {$name2} | ";
 			}
-            echo "<br>";
+            #echo "<br>";
 				
 		}
 		#$abnf ="{$abnf};";
@@ -331,7 +331,7 @@ header('Content-Type: text/html; charset=utf-8');
 			if (count($name2)>0){
 				$abnf2 ="{$abnf2} {$name2} | ";
 			}
-            echo "<br>";
+            #echo "<br>";
 		}
 		#$abnf ="{$abnf};";
 		#$abnf = str_replace("| ;",";",$abnf);
