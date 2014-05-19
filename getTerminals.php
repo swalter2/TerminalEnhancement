@@ -93,6 +93,8 @@ header('Content-Type: text/html; charset=utf-8');
     	
     	echo "<body> <div id=\"terminal-start\">";
         echo "<form action=\"getTerminals.php\" method=\"post\">";
+        echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
+        
         #echo 'python getTerminals.py category'.' '. escapeshellarg(json_encode($categories)).' '. escapeshellarg($second_language);
     	
 		$result = shell_exec('python getTerminals.py category'.' '. escapeshellarg(json_encode($categories)).' '. escapeshellarg($second_language).' '. escapeshellarg($numberterminals));
@@ -146,7 +148,7 @@ header('Content-Type: text/html; charset=utf-8');
             #echo "<br>";
 		}
         echo "</table>";
-        echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
+        
         echo "</form>";
 		
 		
@@ -174,6 +176,7 @@ header('Content-Type: text/html; charset=utf-8');
     	
     	echo "<body> <div id=\"terminal-start\">";
         echo "<form action=\"getTerminals.php\" method=\"post\">";
+        echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
     	
 		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($classes)) .' '. escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language).' '. escapeshellarg($boolean).' '. escapeshellarg($numberterminals));
 		#echo $result;
@@ -228,7 +231,6 @@ header('Content-Type: text/html; charset=utf-8');
 				
 		}
         echo "</table>";
-        echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
         echo "</form>";
 		
 		
@@ -249,7 +251,8 @@ header('Content-Type: text/html; charset=utf-8');
 		 
 		echo "<body> <div id=\"terminal-start\">";
         echo "<form action=\"getTerminals.php\" method=\"post\">";
-		
+        echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
+
 		
 		$result = shell_exec('python getTerminals.py ' . escapeshellarg(json_encode($properties)).' '. escapeshellarg($second_language).' '. escapeshellarg($numberterminals));
 		
@@ -301,7 +304,6 @@ header('Content-Type: text/html; charset=utf-8');
             #echo "<br>";
 		}
         echo "</table>";
-        echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
         echo "</form>";
 		
 		

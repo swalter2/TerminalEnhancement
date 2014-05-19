@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import sys
-
+import sys,ConfigParser
+import MySQLdb
 #sys.path.append("/home/swalter/local/lib/python2.7/site-packages/SPARQLWrapper-1.5.2-py2.7.egg")
 import urllib
 import re, json
@@ -14,6 +14,8 @@ sparql = SPARQLWrapper(endpoint)
 
 sparql_wiktionary = SPARQLWrapper("http://wiktionary.dbpedia.org/sparql")
 
+sqlconnection = ""
+cursor = ""
 
 def unique_items(iterable,number):
 #    tuples = map(tuple, iterable)
@@ -33,18 +35,19 @@ def return_class_of_resource(label_array):
     uri_classes = []
     counter = 0;
     for label in label_array:
-        query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?classes WHERE {?x rdfs:label \""+label+"\"@en .?x rdf:type ?classes. FILTER regex(?classes, \"dbpedia.org\")}"
-        sparql.setQuery(query)
-        sparql.setReturnFormat(JSON)
-        results = sparql.query().convert()
-        if len(results["results"]["bindings"]):
-            counter +=1;
-        for result in results["results"]["bindings"]:
-            try:
-                uri_classes.append(result["classes"]["value"])
-                
-            except:
-                pass
+        cursor.execute("SELECT uri FROM `classes`,(SELECT classid FROM `classrelation` WHERE resourceid = (SELECT id FROM `resourcelabel` WHERE en='%s')) as test WHERE classes.id = test.classid ;",label)
+        #query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?classes WHERE {?x rdfs:label \""+label+"\"@en .?x rdf:type ?classes. FILTER regex(?classes, \"dbpedia.org\")}"
+        #sparql.setQuery(query)
+        #sparql.setReturnFormat(JSON)
+        #results = sparql.query().convert()
+        #if len(results["results"]["bindings"]):
+        #    counter +=1;
+        #for result in results["results"]["bindings"]:
+        #    try:
+        #        uri_classes.append(result["classes"]["value"])
+        #
+        #    except:
+        #        pass
 
     if counter < len(label_array):
         if counter > 1:
@@ -282,7 +285,18 @@ def sortClasses(classes):
 
 def main():
     
-    debug= False
+    config = ConfigParser.ConfigParser()
+    config.read('config.conf')
+    user = config.get('db', 'user')
+    pasw = config.get('db', 'pasw')
+    dbase = config.get('db', 'dbase')
+    host = config.get('db', 'host')
+    global sqlconnection
+    sqlconnection = MySQLdb.connect(host,user, pasw, dbase)
+    global cursor
+    cursor = sqlconnection.cursor()
+
+    debug= True
     data = []
     resource_array = []
     if not debug:
@@ -342,6 +356,8 @@ def main():
     
     print createJsonObject(property_array,class_array, yago_array,category_array)
 
+    cursor.close()
+    sqlconnection.close()
     
 if __name__ == "__main__":
     main()
