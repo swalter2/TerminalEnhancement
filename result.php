@@ -232,7 +232,7 @@ top:100px; }
         
         #classes
         echo "<body> <div id=\"terminal-start\">";
-        echo "<form action=\"getTerminals.php\" method=\"post\">";
+        echo "<form action=\"terminals.php\" method=\"post\">";
         echo "<br>";
         echo "<br>";
         echo "Common dbpedia classes:";
@@ -266,7 +266,7 @@ top:100px; }
             $out = $uri;
             $replaceYago = "http://dbpedia.org/class/yago/";
             $out = str_replace($replaceYago,"",$out);
-            echo "<input type=\"checkbox\" name=\"setClass[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
+            echo "<input type=\"checkbox\" name=\"setYago[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
             echo "<label for=\"id{$uri}\">$out </label><br>";
             
         }
@@ -283,15 +283,15 @@ top:100px; }
             
             $uri = implode('',$entry);
             $out = $uri;
-            $out_python = $out;
             $replaceOntology = "http://dbpedia.org/ontology/";
             $replaceProperty = "http://dbpedia.org/property/";
             $replaceResource= "http://dbpedia.org/resource/";
             $out = str_replace($replaceProperty,"",$out);
             $out = str_replace($replaceOntology,"",$out);
             $out = str_replace($replaceResource,"",$out);
+            $out = str_replace("_"," ",$out);
             
-            echo "<input type=\"checkbox\" name=\"setCategory[]\" value=\"$out_python\" id=\"id{ $uri}\" \"/>";
+            echo "<input type=\"checkbox\" name=\"setCategory[]\" value=\"$uri\" id=\"id{ $uri}\" \"/>";
             echo "<label for=\"id{$uri}\"> $out</label><br>";
             
         }
@@ -304,17 +304,6 @@ top:100px; }
         
         
         
-        
-		
-        echo "<br>";
-        echo "The number in brackets represents the number of entities, linked to the class.<br>";
-        echo "Connect classes with logical AND or OR.<br>";
-        echo "<input type=\"radio\" name=\"boolean\" value=\"AND\" id=\"and\" checked=\"checked\"/>";
-        echo "<label for=\"id{and}\">AND</label><br>";
-        echo "<input type=\"radio\" name=\"boolean\" value=\"OR\" id=\"or\"/>";
-        echo "<label for=\"id{or}\">OR</label><br>";
-        echo "<br>";
-        echo "<br>";
         echo "Common properties:";
         echo "<br>";
         if(empty($properties)){
@@ -339,6 +328,17 @@ top:100px; }
             
         }
         
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+        
+        echo "<br>";
+        echo "Get all terminals, which <br>";
+        echo "<input type=\"radio\" name=\"boolean\" value=\"AND\" id=\"and\" checked=\"checked\"/>";
+        echo "<label for=\"id{and}\">fulfill all above constraints</label><br>";
+        echo "<input type=\"radio\" name=\"boolean\" value=\"OR\" id=\"or\"/>";
+        echo "<label for=\"id{or}\">are in all above mentioned properties, classes and categories (long runtime)</label><br>";
         echo "<br>";
         echo "<br>";
         echo "<br>";
