@@ -355,10 +355,10 @@ top:100px; }
         #make english default and with optional one other language possible
         echo "<input type=\"radio\" name=\"language\" value=\"none\" id=\"none\" checked=\"checked\"/>";
         echo "<label for=\"id{en}\">None</label><br>";
-        echo "<input type=\"radio\" name=\"language\" value=\"de\" id=\"de\"/>";
-        echo "<label for=\"id{de}\">German</label><br>";
-        echo "<input type=\"radio\" name=\"language\" value=\"fr\" id=\"fr\"/>";
-        echo "<label for=\"id{fr}\">French</label><br>";
+        #echo "<input type=\"radio\" name=\"language\" value=\"de\" id=\"de\"/>";
+        #echo "<label for=\"id{de}\">German</label><br>";
+        echo "<input type=\"radio\" name=\"language\" value=\"el\" id=\"fr\"/>";
+        echo "<label for=\"id{el}\">Greek</label><br>";
         echo "<input type=\"radio\" name=\"language\" value=\"es\" id=\"es\"/>";
         echo "<label for=\"id{es}\">Spanish</label><br>";
         echo "<input type=\"radio\" name=\"language\" value=\"zh\" id=\"zh\"\"/>";
