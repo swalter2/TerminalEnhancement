@@ -1,2 +1,2 @@
 #ABNF 1.0 UTF-8; 
- Terminals =  Cypriot pound |  French livre |  Georgian lari |  Gold coin ;
+ Terminals =  Aarau |  Abakaliki |  Abeokuta |  Abha |  Abidjan |  Abu Dhabi |  Abuja |  Accra |  Ad-Damir ;

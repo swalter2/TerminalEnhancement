@@ -37,7 +37,7 @@ header('Content-Type: text/html; charset=utf-8');
                 #echo $second_language;
                 #echo "<br>";
             if ($second_language =='none'){
-                $second_language = "en";
+                $second_language = "zh";
             }
             
             
@@ -200,7 +200,7 @@ header('Content-Type: text/html; charset=utf-8');
 
     	
     	echo "<body> <div id=\"terminal-start\">";
-        echo "<form action=\"getTerminals.php\" method=\"post\">";
+        echo "<form action=\"terminals.php\" method=\"post\">";
         echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
 
         
@@ -212,8 +212,25 @@ header('Content-Type: text/html; charset=utf-8');
 		$abnf2 = "#ABNF 1.0 UTF-8; \n Terminals = ";
         echo "<table border=\"0\">";
         echo "<tr>";
-        echo "<td><h2>en</h2></td>";
-        echo "<td><h2>$second_language</h2></td>";
+        echo "<td><h2>English</h2></td>";
+        
+        #This ignores none, and prints correct language
+        if($second_language=="es"){
+            echo "<td><h2>Spanish</h2></td>";
+        }
+        elseif($second_language=="el"){
+            echo "<td><h2>Greek</h2></td>";
+        }
+        elseif($second_language=="ru"){
+            echo "<td><h2>Russian</h2></td>";
+        }
+        elseif($second_language=="zh"){
+            echo "<td><h2>Chinese</h2></td>";
+        }
+        elseif ($second_language != "none"){
+            echo "<td><h2>$second_language</h2></td>";
+        }
+        
         echo "</tr>";
         $entities1 = $entities[0];
         $entities2 = $entities[1];
@@ -225,14 +242,17 @@ header('Content-Type: text/html; charset=utf-8');
             #echo $name;
             echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
             echo "<label for=\"id{$name}\"> $name</label></td>";
-            $name2 = $element2;
-            if($name2 == ""){
-                echo "<td></td>";
+            if ($second_language != "none"){
+                $name2 = $element2;
+                if($name2 == ""){
+                    echo "<td></td>";
+                }
+                else{
+                    echo "<td><input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
+                    echo "<label for=\"id{$name2}\"> $name2</label></td>";
+                }
             }
-            else{
-                echo "<td><input type=\"checkbox\" name=\"setTerminals2[]\" value=\"$name2\" id=\"id{$name2}\" \"/>";
-                echo "<label for=\"id{$name2}\"> $name2</label></td>";
-            }
+            
             
 
             echo "</tr>";
