@@ -23,6 +23,14 @@ header('Content-Type: text/html; charset=utf-8');
 	<?php
         
         function getEntities($classes,$yago,$categories,$properties,$second_language, $boolean, $d_host, $d_user, $d_pasw, $d_database){
+            
+            $mysqli = new mysqli($d_host, $d_user, $d_pasw, $d_database);
+            if ($mysqli->connect_errno) {
+                printf("Connect failed: %s\n", $mysqli->connect_error);
+                exit();
+            }
+            else{
+            
             $terminals_language1 = array();
             $terminals_language2 = array();
             
@@ -59,7 +67,7 @@ header('Content-Type: text/html; charset=utf-8');
             $where_part = substr($where_part, 0, -4);
             
             $query ="SELECT DISTINCT en,".$second_language." FROM `resourcelabel`".$from_part." WHERE ".$where_part." LIMIT 0, 10 ;";
-            #echo $query;
+            echo "generated query";
             
             if (strpos($boolean,'AND') != false){
                 $query = str_replace(" AND "," OR ",$query);
@@ -68,8 +76,23 @@ header('Content-Type: text/html; charset=utf-8');
             
             #SELECT en FROM `resourcelabel`, (SELECT resourceid FROM `classrelation` WHERE classid = (SELECT id FROM `classes` WHERE uri='http://dbpedia.org/ontology/PopulatedPlace'))as test WHERE resourcelabel.id = test.resourceid;
             
+            if ($result = $mysqli->query($query)) {
+                foreach($result as $r){
+                    $test = array_values($r)[0];
+                    array_push($terminals_language1, $test);
+                    
+                    $test2 = array_values($r)[1];
+                    array_push($terminals_language2, $test2);
+                }
+                    /* free result set */
+                $result->close();
+                    
+            }
+                
+            mysqli_close($mysqli);
+            }
             
-            
+            echo "run query";
             
             return array($terminals_language1,$terminals_language2);
         }
@@ -208,14 +231,6 @@ header('Content-Type: text/html; charset=utf-8');
                 
                 
 			}
-			else{
-				$name = array_values($entry)[0];
-				#echo $name;
-                echo "<td><input type=\"checkbox\" name=\"setTerminals[]\" value=\"$name\" id=\"id{$name}\" \"/>";
-                echo "<label for=\"id{$name}\"> $name</label></td>";
-                echo "<td></td>";
-			}
-			#echo "<br>";
             echo "</tr>";
 
 			$abnf ="{$abnf} {$name} | ";
