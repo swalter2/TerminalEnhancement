@@ -72,7 +72,7 @@ top:100px; }
             }
             $where_part = substr($where_part, 0, -4);
             
-            $query ="SELECT uri FROM `classes`".$from_part." WHERE ".$where_part.";";
+            $query ="SELECT DISTINCT uri FROM `classes`".$from_part." WHERE ".$where_part.";";
             #echo $query;
             #echo "<br>";
             if ($result = $mysqli->query($query)) {
@@ -110,7 +110,7 @@ top:100px; }
             }
             $where_part = substr($where_part, 0, -4);
         
-            $query ="SELECT uri FROM `yago`".$from_part." WHERE ".$where_part.";";
+            $query ="SELECT DISTINCT uri FROM `yago`".$from_part." WHERE ".$where_part.";";
             #echo $query;
             #echo "<br>";
             if ($result = $mysqli->query($query)) {
@@ -148,7 +148,44 @@ top:100px; }
             }
             $where_part = substr($where_part, 0, -4);
             
-            $query ="SELECT uri FROM `categorylabel`".$from_part." WHERE ".$where_part.";";
+            $query ="SELECT DISTINCT uri FROM `categorylabel`".$from_part." WHERE ".$where_part.";";
+            #echo $query;
+            #echo "<br>";
+            if ($result = $mysqli->query($query)) {
+                foreach($result as $r){
+                    array_push($return_value, $r);
+                }
+                /* free result set */
+                $result->close();
+                
+            }
+        }
+        
+        mysqli_close($mysqli);
+        return $return_value;
+    }
+    
+    function getProperty($resource, $d_host, $d_user, $d_pasw, $d_database){
+        $return_value = array();
+        $mysqli = new mysqli($d_host, $d_user, $d_pasw, $d_database);
+        /* check connection */
+        if ($mysqli->connect_errno) {
+            printf("Connect failed: %s\n", $mysqli->connect_error);
+            exit();
+        }
+        else{
+            $from_part = "";
+            $where_part = "";
+            $counter = 0;
+            foreach($resource as $res){
+                $from_part = $from_part . ",(SELECT propertyid FROM `propertyrelation` WHERE subjectid = (SELECT id FROM `resourcelabel` WHERE en='".$res."')) as test{$counter}";
+                $where_part = $where_part . "property.id = test{$counter}.propertyid AND ";
+                $counter += 1;
+                
+            }
+            $where_part = substr($where_part, 0, -4);
+            
+            $query ="SELECT DISTINCT uri FROM `property`".$from_part." WHERE ".$where_part.";";
             #echo $query;
             #echo "<br>";
             if ($result = $mysqli->query($query)) {
@@ -183,11 +220,15 @@ top:100px; }
         $res = str_replace(", ",",",$res);
         
         $data = explode(",", $res);
+        
+        #run SQL
         $classes = getClasses($data, $d_host, $d_user, $d_pasw, $d_database);
         $yago = getYago($data, $d_host, $d_user, $d_pasw, $d_database);
         $categories = getCategory($data, $d_host, $d_user, $d_pasw, $d_database);
+        $properties = getProperty($data, $d_host, $d_user, $d_pasw, $d_database);
         
         
+        #### Output ####
         
         #classes
         echo "<body> <div id=\"terminal-start\">";
@@ -276,26 +317,25 @@ top:100px; }
         echo "<br>";
         echo "Common properties:";
         echo "<br>";
-        $properties = array_values($json_output)[3];
         if(empty($properties)){
             echo "No properties were found.";
         }
         foreach($properties as $entry){
-            $uri = array_values($entry)[0];
-            $value = array_values($entry)[1];
-            #I use the " with " as seperator later
-            $out = "{$uri} with {$value}";
-            $out_python = $out;
-            $replaceOntology = "http://dbpedia.org/ontology/";
-            $replaceProperty = "http://dbpedia.org/property/";
-            $replaceResource= "http://dbpedia.org/resource/";
-            $out = str_replace($replaceProperty,"",$out);
-            $out = str_replace($replaceOntology,"",$out);
-            $out = str_replace($replaceResource,"",$out);
-            $out = str_replace("with","",$out);
+            $uri = implode('',$entry);
+            $out = $uri;
+            if (strpos($uri,'ontology') != false){
+                $replaceOntology = "http://dbpedia.org/ontology/";
+                $replaceProperty = "http://dbpedia.org/property/";
+                $replaceResource= "http://dbpedia.org/resource/";
+                $out = str_replace($replaceProperty,"",$out);
+                $out = str_replace($replaceOntology,"",$out);
+                $out = str_replace($replaceResource,"",$out);
+                $out = str_replace("with","",$out);
+                
+                echo "<input type=\"checkbox\" name=\"setProperty[]\" value=\"$uri\" id=\"id{ $uri}\" \"/>";
+                echo "<label for=\"id{$uri}\"> $out</label><br>";
+            }
             
-            echo "<input type=\"checkbox\" name=\"setProperty[]\" value=\"$out_python\" id=\"id{ $uri}\" \"/>";
-            echo "<label for=\"id{$uri}\"> $out</label><br>";
             
         }
         
