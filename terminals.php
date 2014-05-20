@@ -25,6 +25,7 @@ header('Content-Type: text/html; charset=utf-8');
         function getEntities($classes,$yago,$categories,$properties,$second_language, $boolean, $numberterminals, $d_host, $d_user, $d_pasw, $d_database){
             
             $mysqli = new mysqli($d_host, $d_user, $d_pasw, $d_database);
+            mysqli_set_charset($mysqli, "utf8");
             if ($mysqli->connect_errno) {
                 printf("Connect failed: %s\n", $mysqli->connect_error);
                 exit();

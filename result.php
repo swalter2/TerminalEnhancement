@@ -29,6 +29,7 @@ top:100px; }
         $return_value = array();
         $return_number = array();
         $mysqli = new mysqli($d_host, $d_user, $d_pasw, $d_database);
+        mysqli_set_charset($mysqli, "utf8");
         /* check connection */
         if ($mysqli->connect_errno) {
             printf("Connect failed: %s\n", $mysqli->connect_error);
@@ -91,6 +92,7 @@ top:100px; }
         $return_value = array();
         $return_number = array();
         $mysqli = new mysqli($d_host, $d_user, $d_pasw, $d_database);
+        mysqli_set_charset($mysqli, "utf8");
         /* check connection */
         if ($mysqli->connect_errno) {
             printf("Connect failed: %s\n", $mysqli->connect_error);
@@ -152,6 +154,7 @@ top:100px; }
         $return_value = array();
         $return_number = array();
         $mysqli = new mysqli($d_host, $d_user, $d_pasw, $d_database);
+        mysqli_set_charset($mysqli, "utf8");
         /* check connection */
         if ($mysqli->connect_errno) {
             printf("Connect failed: %s\n", $mysqli->connect_error);
@@ -210,6 +213,7 @@ top:100px; }
     function getProperty($resource, $d_host, $d_user, $d_pasw, $d_database){
         $return_value = array();
         $mysqli = new mysqli($d_host, $d_user, $d_pasw, $d_database);
+        mysqli_set_charset($mysqli, "utf8");
         /* check connection */
         if ($mysqli->connect_errno) {
             printf("Connect failed: %s\n", $mysqli->connect_error);
@@ -426,8 +430,8 @@ top:100px; }
         #make english default and with optional one other language possible
         echo "<input type=\"radio\" name=\"language\" value=\"none\" id=\"none\" checked=\"checked\"/>";
         echo "<label for=\"id{en}\">None</label><br>";
-        #echo "<input type=\"radio\" name=\"language\" value=\"de\" id=\"de\"/>";
-        #echo "<label for=\"id{de}\">German</label><br>";
+        echo "<input type=\"radio\" name=\"language\" value=\"de\" id=\"de\"/>";
+        echo "<label for=\"id{de}\">German</label><br>";
         echo "<input type=\"radio\" name=\"language\" value=\"el\" id=\"fr\"/>";
         echo "<label for=\"id{el}\">Greek</label><br>";
         echo "<input type=\"radio\" name=\"language\" value=\"es\" id=\"es\"/>";
