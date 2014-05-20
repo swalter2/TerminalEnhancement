@@ -412,7 +412,7 @@ top:100px; }
         echo "<input type=\"radio\" name=\"boolean\" value=\"AND\" id=\"and\" checked=\"checked\"/>";
         echo "<label for=\"id{and}\">fulfill all above constraints</label><br>";
         echo "<input type=\"radio\" name=\"boolean\" value=\"OR\" id=\"or\"/>";
-        echo "<label for=\"id{or}\">are in all above mentioned properties, classes and categories (long runtime)</label><br>";
+        echo "<label for=\"id{or}\">are at least in one of the properties, classes or categories (long runtime)</label><br>";
         echo "<br>";
         echo "Note that one terminal can be part of different classes and categories.";
         echo "<br>";
