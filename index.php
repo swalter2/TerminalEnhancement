@@ -37,6 +37,8 @@ etc.<br><br><br>
 <form action="result.php" method="GET">
 <input id="start" type="text" name="resourcelist" size="80" maxlength="80" />
 <input type="submit" value="Start" />
+<br>
+(Operation takes around one minute!)
 </form>
 </div>
 </body>
