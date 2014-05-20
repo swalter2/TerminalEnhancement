@@ -101,6 +101,7 @@ header('Content-Type: text/html; charset=utf-8');
         }
         
         
+        session_start();
         
         $d_host = "localhost";
         $d_user = "dbpedia";
@@ -112,17 +113,130 @@ header('Content-Type: text/html; charset=utf-8');
         #echo "&#0391;";
         #echo "<br>";
         
+        if(isset($_POST['booleanAll'])){
+            echo "<body>";
+            echo "<p>";
+            $second_language = ($_SESSION['language']);
+            
+            $abnf = "#ABNF 1.0 UTF-8; \n Language = english; \n Terminals = ";
+            $abnf2 = "#ABNF 1.0 UTF-8; \n Terminals = ";
+            
+            if($second_language=="es"){
+                $second_language = "spanish";
+                $abnf2 = "#ABNF 1.0 UTF-8; \n Language = spanish; \n Terminals = ";
+            }
+            elseif($second_language=="el"){
+                $second_language = "greek";
+                $abnf2 = "#ABNF 1.0 UTF-8; \n Language = greek; \n Terminals = ";
+            }
+            elseif($second_language=="ru"){
+                $second_language = "russian";
+                $abnf2 = "#ABNF 1.0 UTF-8; \n Language = russian; \n Terminals = ";
+            }
+            elseif($second_language=="zh"){
+                $second_language = "chinese";
+                $abnf2 = "#ABNF 1.0 UTF-8; \n Language = chinese; \n Terminals = ";
+            }
+            elseif($second_language=="de"){
+                $second_language = "german";
+                $abnf2 = "#ABNF 1.0 UTF-8; \n Language = german; \n Terminals = ";
+            }
+            elseif ($second_language != "none"){
+                $second_language = "none";
+                $abnf2 = "#ABNF 1.0 UTF-8; \nTerminals = ";
+            }
+            
+            if(isset($_SESSION['terminalsAll1'])){
+                
+                echo "<a href=\"terminals.txt\">Download Terminal-ABNF (english)</a>";
+                
+                
+                $terminals = $_SESSION['terminalsAll1'];
+                foreach($terminals as $entry){
+                    $abnf ="{$abnf} {$entry} | ";
+                    
+                    
+                }
+                
+                $abnf ="{$abnf};";
+                $abnf = str_replace("| ;",";",$abnf);
+                $abnf = str_replace("|   ","",$abnf);
+                $out = fopen('terminals.txt', 'w') or die("can't open file");
+                fwrite($out, $abnf);
+                fclose($out);
+                
+                
+            }
+            echo "<br>";
+            echo "<br>";
+            
+            if(isset($_SESSION['terminalsAll2'])){
+                
+                echo "<a href=\"terminals2.txt\">Download Terminal-ABNF (".$second_language.")</a>";
+                
+                
+                $terminals = $_SESSION['terminalsAll2'];
+                foreach($terminals as $entry){
+                    $abnf2 ="{$abnf2} {$entry} | ";
+                    
+                    
+                }
+                
+                $abnf2 ="{$abnf2};";
+                $abnf2 = str_replace("| ;",";",$abnf2);
+                $abnf2 = str_replace("|   ","",$abnf2);
+                $out = fopen('terminals2.txt', 'w') or die("can't open file");
+                fwrite($out, $abnf2);
+                fclose($out);
+                
+                
+            }
+            
+            
+            echo "</p>";
+            echo "</body>";
+        }
         
         
-        if(isset($_POST['setTerminals'])|| isset($_POST['setTerminals2'])){
+        elseif(isset($_POST['setTerminals'])|| isset($_POST['setTerminals2'])){
             
             echo "<body>";
             echo "<p>";
+            $second_language = ($_SESSION['language']);
+            
+            $abnf = "#ABNF 1.0 UTF-8; \n Language = english; \n Terminals = ";
+            $abnf2 = "#ABNF 1.0 UTF-8; \n Terminals = ";
+            
+            if($second_language=="es"){
+                $second_language = "spanish";
+                $abnf2 = "#ABNF 1.0 UTF-8; \n Language = spanish; \n Terminals = ";
+            }
+            elseif($second_language=="el"){
+                $second_language = "greek";
+                $abnf2 = "#ABNF 1.0 UTF-8; \n Language = greek; \n Terminals = ";
+            }
+            elseif($second_language=="ru"){
+                $second_language = "russian";
+                $abnf2 = "#ABNF 1.0 UTF-8; \n Language = russian; \n Terminals = ";
+            }
+            elseif($second_language=="zh"){
+                $second_language = "chinese";
+                $abnf2 = "#ABNF 1.0 UTF-8; \n Language = chinese; \n Terminals = ";
+            }
+            elseif($second_language=="de"){
+                $second_language = "german";
+                $abnf2 = "#ABNF 1.0 UTF-8; \n Language = german; \n Terminals = ";
+            }
+            elseif ($second_language != "none"){
+                $second_language = "none";
+                $abnf2 = "#ABNF 1.0 UTF-8; \nTerminals = ";
+            }
+            
             if(isset($_POST['setTerminals'])){
                 
-                echo "<a href=\"terminals.txt\">Download Terminal-ABNF</a>";
+                echo "<a href=\"terminals.txt\">Download Terminal-ABNF (english)</a>";
                 
-                $abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
+                
                 $terminals = $_POST['setTerminals'];
                 foreach($terminals as $entry){
                     $abnf ="{$abnf} {$entry} | ";
@@ -144,21 +258,21 @@ header('Content-Type: text/html; charset=utf-8');
             
             if(isset($_POST['setTerminals2'])){
                 
-                echo "<a href=\"terminals2.txt\">Download Terminal-ABNF for second language</a>";
+                echo "<a href=\"terminals2.txt\">Download Terminal-ABNF (".$second_language.")</a>";
                 
-                $abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
+                
                 $terminals = $_POST['setTerminals2'];
                 foreach($terminals as $entry){
-                    $abnf ="{$abnf} {$entry} | ";
+                    $abnf2 ="{$abnf2} {$entry} | ";
                     
                     
                 }
                 
-                $abnf ="{$abnf};";
-                $abnf = str_replace("| ;",";",$abnf);
-                $abnf = str_replace("|   ","",$abnf);
+                $abnf2 ="{$abnf2};";
+                $abnf2 = str_replace("| ;",";",$abnf2);
+                $abnf2 = str_replace("|   ","",$abnf2);
                 $out = fopen('terminals2.txt', 'w') or die("can't open file");
-                fwrite($out, $abnf);
+                fwrite($out, $abnf2);
                 fclose($out);
                 
                 
@@ -198,6 +312,7 @@ header('Content-Type: text/html; charset=utf-8');
     	}
 
     	$second_language = ($_POST['language']);
+        $_SESSION['language'] = $second_language;
     	$boolean = ($_POST['boolean']);
         
         
@@ -206,14 +321,14 @@ header('Content-Type: text/html; charset=utf-8');
     	
     	echo "<body> <div id=\"terminal-start\">";
         echo "<form action=\"terminals.php\" method=\"post\">";
-        echo "<input type=\"submit\" name=\"Download\" value=\"Submit\"><br>";
-
-        
+        echo "<input type=\"submit\" name=\"Download\" value=\"Download\"><br>";
 		echo "<br>";
-		#echo "Retrieved ".count(array_values($entities)[1])." terminals";
-		echo "<br>";
-		echo "<br>";
-		$abnf = "#ABNF 1.0 UTF-8; \n Terminals = ";
+        echo "<input type=\"radio\" name=\"booleanAll\" value=\"YES\" id=\"yes\"/>";
+        echo "<label for=\"id{and}\">Get all Terminals!     </label>";
+        echo "<input type=\"radio\" name=\"booleantmp\" value=\"NO\" id=\"no\" checked=\"checked\" />";
+        echo "<label for=\"id{or}\">Get only selected Terminals!</label><br>";
+        echo "<br>";
+		$abnf = "#ABNF 1.0 UTF-8; \n language = english; \n Terminals = ";
 		$abnf2 = "#ABNF 1.0 UTF-8; \n Terminals = ";
         echo "<table border=\"0\">";
         echo "<tr>";
@@ -232,6 +347,9 @@ header('Content-Type: text/html; charset=utf-8');
         elseif($second_language=="zh"){
             echo "<td><h2>Chinese</h2></td>";
         }
+        elseif($second_language=="de"){
+            echo "<td><h2>German</h2></td>";
+        }
         elseif ($second_language != "none"){
             echo "<td><h2>$second_language</h2></td>";
         }
@@ -239,6 +357,8 @@ header('Content-Type: text/html; charset=utf-8');
         echo "</tr>";
         $entities1 = $entities[0];
         $entities2 = $entities[1];
+        $_SESSION['terminalsAll1'] = $entities1;
+        $_SESSION['terminalsAll2'] = $entities2;
 		while (($element1 = next($entities1)) !== false) {
             $element2 = next($entities2);
 			$name= "";
