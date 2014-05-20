@@ -106,6 +106,10 @@ header('Content-Type: text/html; charset=utf-8');
         $d_pasw = "";
         $d_database = "dbpedia";
         
+        #echo "u0391";
+        #echo "<br>";
+        #echo "&#0391;";
+        #echo "<br>";
         
         
         
@@ -244,6 +248,19 @@ header('Content-Type: text/html; charset=utf-8');
             echo "<label for=\"id{$name}\"> $name</label></td>";
             if ($second_language != "none"){
                 $name2 = $element2;
+                #if (strpos($name2,"u0")){
+                #    #echo "in if";
+                #    $tmp_name2 = split("u0",$name2);
+                #    $name2 = "";
+                #    foreach($tmp_name2 as $s){
+                #        #echo $s;
+                #        #echo "<br>";
+                #        if (count($s)==3) $name2 = $name2."&#".$s.";";
+                #        else $name2 = $name2.$s;
+                #    }
+                #}
+                #$name2 = str_replace("u0","&#",$name2);
+                
                 if($name2 == ""){
                     echo "<td></td>";
                 }
