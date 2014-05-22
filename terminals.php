@@ -86,7 +86,7 @@ header('Content-Type: text/html; charset=utf-8');
             
             $query ="SELECT DISTINCT en,".$second_language." FROM `resourcelabel`".$from_part." WHERE ".$where_part." LIMIT 0, {$numberterminals} ;";
                 #echo "generated query";
-                echo $query;
+                #echo $query;
             
             if ($boolean== 'OR'){
                 $query = str_replace(" AND "," OR ",$query);
