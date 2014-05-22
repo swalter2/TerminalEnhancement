@@ -46,31 +46,47 @@ header('Content-Type: text/html; charset=utf-8');
             $where_part = "";
             $counter = 0;
             
-            foreach($classes as $res){
-                $from_part = $from_part . ",(SELECT resourceid FROM `classrelation` WHERE classid = (SELECT id FROM `classes` WHERE uri='".$res."')) as test{$counter}";
-                $where_part = $where_part . "resourcelabel.id = test{$counter}.resourceid AND ";
-                $counter += 1;
-            }
-
-            
-            foreach($yago as $res){
-                $from_part = $from_part . ",(SELECT resourceid FROM `yagorelation` WHERE classid = (SELECT id FROM `yago` WHERE uri='".$res."')) as test{$counter}";
-                $where_part = $where_part . "resourcelabel.id = test{$counter}.resourceid AND ";
-                $counter += 1;
-            }
-
-            
-            foreach($categories as $res){
-                $from_part = $from_part . ",(SELECT resourceid FROM `categoryrelation` WHERE categoryid = (SELECT id FROM `categorylabel` WHERE uri='".$res."')) as test{$counter}";
-                $where_part = $where_part . "resourcelabel.id = test{$counter}.resourceid AND ";
-                $counter += 1;
-            }
+                foreach($classes as $res){
+                    if ($boolean == 'OR'){
+                        $from_part = $from_part . ",(SELECT resourceid FROM `classrelation` WHERE classid = (SELECT id FROM `classes` WHERE uri='".$res."')LIMIT 0, {$numberterminals}) as test{$counter}";
+                    }
+                    else{
+                        $from_part = $from_part . ",(SELECT resourceid FROM `classrelation` WHERE classid = (SELECT id FROM `classes` WHERE uri='".$res."')) as test{$counter}";
+                    }
+                    $where_part = $where_part . "resourcelabel.id = test{$counter}.resourceid AND ";
+                    $counter += 1;
+                }
+                
+                
+                foreach($yago as $res){
+                    if ($boolean == 'OR'){
+                        $from_part = $from_part . ",(SELECT resourceid FROM `yagorelation` WHERE classid = (SELECT id FROM `yago` WHERE uri='".$res."')LIMIT 0, {$numberterminals}) as test{$counter}";
+                    }
+                    else{
+                        $from_part = $from_part . ",(SELECT resourceid FROM `yagorelation` WHERE classid = (SELECT id FROM `yago` WHERE uri='".$res."')) as test{$counter}";
+                    }
+                    $where_part = $where_part . "resourcelabel.id = test{$counter}.resourceid AND ";
+                    $counter += 1;
+                }
+                
+                
+                foreach($categories as $res){
+                    if ($boolean == 'OR'){
+                        $from_part = $from_part . ",(SELECT resourceid FROM `categoryrelation` WHERE categoryid = (SELECT id FROM `categorylabel` WHERE uri='".$res."')LIMIT 0, {$numberterminals}) as test{$counter}";
+                    }
+                    else{
+                        $from_part = $from_part . ",(SELECT resourceid FROM `categoryrelation` WHERE categoryid = (SELECT id FROM `categorylabel` WHERE uri='".$res."')) as test{$counter}";
+                    }
+                    $where_part = $where_part . "resourcelabel.id = test{$counter}.resourceid AND ";
+                    $counter += 1;
+                }
             
             
             $where_part = substr($where_part, 0, -4);
             
             $query ="SELECT DISTINCT en,".$second_language." FROM `resourcelabel`".$from_part." WHERE ".$where_part." LIMIT 0, {$numberterminals} ;";
                 #echo "generated query";
+                echo $query;
             
             if ($boolean== 'OR'){
                 $query = str_replace(" AND "," OR ",$query);

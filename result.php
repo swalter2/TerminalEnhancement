@@ -290,7 +290,8 @@ top:100px; }
         
         $class = $classes[0];
         $class_number = $classes[1];
-
+        echo count($class);
+        echo "<br>";
         if(empty($class)){
             echo "No DBbedia classes were found.";
         }
@@ -330,6 +331,18 @@ top:100px; }
         if(empty($yagoclass)){
             echo "No YAGO classes were found.";
         }
+        
+        if (count($yagoclass)==1){
+            $uri = implode('',$yagoclass[0]);
+            $value = implode('',$yago_number[0]);
+            $out = $uri;
+            $replaceOntology = "http://dbpedia.org/class/yago/";
+            $out = str_replace($replaceOntology,"",$out);
+            echo "<input type=\"checkbox\" name=\"setYago[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
+            echo "<label for=\"id{$uri}\">$out </label><font color=\"grey\">(".$value.")</font><br>";
+        }
+        else{
+            
         while (($element1 = next($yagoclass)) !== false) {
             $element2 = next($yago_number);
             $uri = implode('',$element1);
@@ -340,7 +353,7 @@ top:100px; }
             echo "<input type=\"checkbox\" name=\"setYago[]\" value=\"$uri\" id=\"id{ $uri}\"\"/>";
             echo "<label for=\"id{$uri}\">$out </label><font color=\"grey\">(".$value.")</font><br>";
             
-        }
+        }}
         
         
         echo "<br>";
@@ -352,6 +365,20 @@ top:100px; }
         if(empty($categoryclass)){
             echo "No categories were found.";
         }
+        if (count($categoryclass)==1){
+            $uri = implode('',$categoryclass[0]);
+            $value = implode('',$category_number[0]);
+            $out = $uri;
+            $replaceOntology = "http://dbpedia.org/ontology/";
+            $replaceProperty = "http://dbpedia.org/property/";
+            $replaceResource= "http://dbpedia.org/resource/";
+            $out = str_replace($replaceProperty,"",$out);
+            $out = str_replace($replaceOntology,"",$out);
+            $out = str_replace($replaceResource,"",$out);
+            echo "<input type=\"checkbox\" name=\"setCategory[]\" value=\"$uri\" id=\"id{ $uri}\" \"/>";
+            echo "<label for=\"id{$uri}\"> $out</label><font color=\"grey\">(".$value.")</font><br>";
+        }
+        else{
         while (($element1 = next($categoryclass)) !== false) {
             $element2 = next($category_number);
             $uri = implode('',$element1);
@@ -368,7 +395,7 @@ top:100px; }
             echo "<input type=\"checkbox\" name=\"setCategory[]\" value=\"$uri\" id=\"id{ $uri}\" \"/>";
             echo "<label for=\"id{$uri}\"> $out</label><font color=\"grey\">(".$value.")</font><br>";
             
-        }
+        }}
         
         
         echo "<br>";
