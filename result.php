@@ -38,30 +38,57 @@ top:100px; }
         else{
             $from_part = "";
             $where_part = "";
+            
+            #$counter = 0;
+            #foreach($resource as $res){
+            #    $from_part = $from_part . ",(SELECT classid FROM `classrelation` WHERE resourceid = (SELECT id FROM `resourcelabel` WHERE en='".ucfirst($res)."')) as test{$counter}";
+            #    $where_part = $where_part . "classes.id = test{$counter}.classid AND ";
+            #    $counter += 1;
+            #
+            #}
+            #$where_part = substr($where_part, 0, -4);
+            #
+            #$query ="SELECT DISTINCT uri FROM `classes`".$from_part." WHERE ".$where_part.";";
+            ##echo $query;
+            ##echo "<br>";
+            #if ($result = $mysqli->query($query)) {
+            #    foreach($result as $r){
+            #        $uri = implode('',$r);
+            #        if (strpos($uri,'Thing') == false and strpos($uri,'schema') == false and strpos($uri,'foaf') == false and strpos($uri,'ontology') == true){
+            #            array_push($return_value, $r);
+            #            }
+            #
+            #        }
+            #    /* free result set */
+            #    $result->close();
+            #
+            #    }
             $counter = 0;
             foreach($resource as $res){
-                $from_part = $from_part . ",(SELECT classid FROM `classrelation` WHERE resourceid = (SELECT id FROM `resourcelabel` WHERE en='".$res."')) as test{$counter}";
-                $where_part = $where_part . "classes.id = test{$counter}.classid AND ";
-                $counter += 1;
+                #$from_part = $from_part . ",(SELECT classid FROM `classrelation` WHERE resourceid = (SELECT id FROM `resourcelabel` WHERE en='".ucfirst($res)."')) as test{$counter}";
+                #$where_part = $where_part . "classes.id = test{$counter}.classid AND ";
+                #$counter += 1;
+                #$where_part = substr($where_part, 0, -4);
                 
-            }
-            $where_part = substr($where_part, 0, -4);
-            
-            $query ="SELECT DISTINCT uri FROM `classes`".$from_part." WHERE ".$where_part.";";
-            #echo $query;
-            #echo "<br>";
-            if ($result = $mysqli->query($query)) {
-                foreach($result as $r){
-                    $uri = implode('',$r);
-                    if (strpos($uri,'Thing') == false and strpos($uri,'schema') == false and strpos($uri,'foaf') == false and strpos($uri,'ontology') == true){
-                        array_push($return_value, $r);
+                $query ="SELECT DISTINCT uri FROM `classes` ,(SELECT classid FROM `classrelation` WHERE resourceid = (SELECT id FROM `resourcelabel` WHERE en='".ucfirst($res)."')) as test WHERE classes.id = test.classid;";
+                #echo $query;
+                #echo "<br>";
+                if ($result = $mysqli->query($query)) {
+                    foreach($result as $r){
+                        $uri = implode('',$r);
+                        if (strpos($uri,'Thing') == false and strpos($uri,'schema') == false and strpos($uri,'foaf') == false and strpos($uri,'ontology') == true){
+                            array_push($return_value, $r);
+                        }
+                        
                     }
+                    /* free result set */
+                    $result->close();
                     
                 }
-                /* free result set */
-                $result->close();
-            
+
             }
+            
+            
             foreach($return_value as $r){
                 $uri = implode('',$r);
                 $query = "SELECT DISTINCT COUNT(resourceid) FROM `classrelation`,(SELECT id FROM `classes` WHERE uri='".$uri."') as test WHERE classrelation.classid = test.id;";
@@ -103,7 +130,7 @@ top:100px; }
             $where_part = "";
             $counter = 0;
             foreach($resource as $res){
-                $from_part = $from_part . ",(SELECT classid FROM `yagorelation` WHERE resourceid = (SELECT id FROM `resourcelabel` WHERE en='".$res."')) as test{$counter}";
+                $from_part = $from_part . ",(SELECT classid FROM `yagorelation` WHERE resourceid = (SELECT id FROM `resourcelabel` WHERE en='".ucfirst($res)."')) as test{$counter}";
                 $where_part = $where_part . "yago.id = test{$counter}.classid AND ";
                 $counter += 1;
             
@@ -165,12 +192,12 @@ top:100px; }
             $where_part = "";
             $counter = 0;
             foreach($resource as $res){
-                $from_part = $from_part . ",(SELECT categoryid FROM `categoryrelation` WHERE resourceid = (SELECT id FROM `resourcelabel` WHERE en='".$res."')) as test{$counter}";
-                $where_part = $where_part . "categorylabel.id = test{$counter}.categoryid AND ";
+                $from_part = $from_part . ",(SELECT categoryid FROM `categoryrelation` WHERE resourceid = (SELECT id FROM `resourcelabel` WHERE en='".ucfirst($res)."')) as test{$counter}";
+                $where_part = $where_part . "categorylabel.id = test{$counter}.categoryid OR ";
                 $counter += 1;
-                
+            
             }
-            $where_part = substr($where_part, 0, -4);
+            $where_part = substr($where_part, 0, -3);
             
             $query ="SELECT DISTINCT uri FROM `categorylabel`".$from_part." WHERE ".$where_part.";";
             #echo $query;
@@ -181,8 +208,13 @@ top:100px; }
                 }
                 /* free result set */
                 $result->close();
-                
+            
             }
+            
+            
+            
+           
+            
             foreach($return_value as $r){
                 $uri = implode('',$r);
                 #echo $uri;
